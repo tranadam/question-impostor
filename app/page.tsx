@@ -1,4 +1,4 @@
-import PlayerSelection from "@/components/player-selection";
+import GameConfig from "@/components/game-config";
 import Rules from "@/components/rules";
 
 export default function Home() {
@@ -6,7 +6,7 @@ export default function Home() {
     <main className="mx-auto mb-16 max-w-2xl px-4">
       <Rules />
       <div className="mt-10">
-        <PlayerSelection />
+        <GameConfig />
       </div>
     </main>
   );
