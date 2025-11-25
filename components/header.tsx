@@ -9,6 +9,7 @@ export default function Header() {
         <Image
           src="/illustrations/right-doubt-stickman.svg"
           alt=""
+          loading="eager"
           width={110}
           height={158}
           className="absolute -top-8 -right-14"
@@ -16,6 +17,7 @@ export default function Header() {
         <Image
           src="/illustrations/middle-happy-stickman.svg"
           alt=""
+          loading="eager"
           width={41}
           height={67}
           className="absolute top-full left-1/2 -translate-x-1/2"
@@ -23,6 +25,7 @@ export default function Header() {
         <Image
           src="/illustrations/left-doubt-stickman.svg"
           alt=""
+          loading="eager"
           width={86}
           height={154}
           className="absolute -top-8 -left-16"

@@ -5,10 +5,11 @@ import NumericInput from "@/components/ui/numeric-input";
 import { TypographyMuted, TypographySmall } from "@/components/ui/typography";
 import { MAX_PLAYERS, MIN_IMPOSTORS, MIN_PLAYERS } from "@/lib/game-config";
 import { Rocket } from "lucide-react";
-import { useState } from "react";
 import { toast } from "sonner";
 import BasicStickman from "@/components/illustrations/basic-stickman.svg";
 import { cn } from "@/lib/utils";
+import { useGameStorage } from "@/lib/hooks/use-game-storage";
+import Link from "next/link";
 
 function PlayerCountIllustration(count: number, isImpostor: boolean) {
   const total = Array.from({ length: count }, (_, i) => i);
@@ -27,9 +28,15 @@ function PlayerCountIllustration(count: number, isImpostor: boolean) {
   );
 }
 
-export default function GameConfig() {
-  const [playersCount, setPlayersCount] = useState(MIN_PLAYERS);
-  const [impostorsCount, setImpostorsCount] = useState(MIN_IMPOSTORS);
+export default function GameSetup() {
+  const [playersCount, setPlayersCount] = useGameStorage(
+    "players_cnt",
+    MIN_PLAYERS,
+  );
+  const [impostorsCount, setImpostorsCount] = useGameStorage(
+    "impostors_cnt",
+    MIN_IMPOSTORS,
+  );
 
   const validatePlayersCount = (count: number): boolean => {
     if (count < MIN_PLAYERS || count > MAX_PLAYERS) {
@@ -124,8 +131,9 @@ export default function GameConfig() {
         {PlayerCountIllustration(impostorsCount, true)}
       </div>
       <TypographyMuted className="mt-2">
-        recommended {calcRecommendedImpostors(playersCount)} impostor for{" "}
-        {playersCount} players
+        recommended {calcRecommendedImpostors(playersCount)} impostor
+        {calcRecommendedImpostors(playersCount) > 1 && "s"} for {playersCount}{" "}
+        players
       </TypographyMuted>
     </div>
   );
@@ -134,9 +142,11 @@ export default function GameConfig() {
     <section className="flex flex-col gap-6">
       {PlayerSelection}
       {ImpostorSelection}
-      <Button size="lg">
-        <Rocket />
-        start game
+      <Button asChild size="lg">
+        <Link href="/game">
+          <Rocket />
+          start game
+        </Link>
       </Button>
     </section>
   );
