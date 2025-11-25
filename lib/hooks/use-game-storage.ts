@@ -1,27 +1,31 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-export function useGameStorage<T>(
-  key: string,
-  initialValue: T,
-): [T, React.Dispatch<React.SetStateAction<T>>] {
-  const [value, setValue] = useState(initialValue);
+export function useGameStorage<T>(key: UserGameConfig, initialValue: T) {
+  const [value, setValue] = useState<T>(initialValue);
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    const stored = sessionStorage.getItem(key);
-    setValue(stored ? JSON.parse(stored) : initialValue);
-  }, [key, initialValue]);
-
-  useEffect(() => {
-    if (
-      typeof window === "undefined" ||
-      typeof sessionStorage === "undefined"
-    ) {
-      return;
+    try {
+      const item = window.sessionStorage.getItem(key);
+      if (item !== null) {
+        setValue(JSON.parse(item));
+      }
+    } catch (e) {
+      console.error("sessionStorage read failed", e);
     }
-    sessionStorage.setItem(key, JSON.stringify(value));
-  }, [key, value]);
+    setHydrated(true);
+  }, [key]);
 
-  return [value, setValue];
+  useEffect(() => {
+    if (!hydrated) return;
+    try {
+      window.sessionStorage.setItem(key, JSON.stringify(value));
+    } catch (e) {
+      console.error("sessionStorage write failed", e);
+    }
+  }, [key, value, hydrated]);
+
+  return [value, setValue] as const;
 }
