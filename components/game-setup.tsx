@@ -3,7 +3,12 @@
 import { Button } from "@/components/ui/button";
 import NumericInput from "@/components/ui/numeric-input";
 import { TypographyMuted, TypographySmall } from "@/components/ui/typography";
-import { MAX_PLAYERS, MIN_IMPOSTORS, MIN_PLAYERS } from "@/lib/game-config";
+import {
+  MAX_PLAYERS,
+  MIN_IMPOSTORS,
+  MIN_PLAYERS,
+  UserGameConfig,
+} from "@/lib/game-config";
 import { Rocket } from "lucide-react";
 import { toast } from "sonner";
 import BasicStickman from "@/components/illustrations/basic-stickman.svg";
@@ -30,12 +35,16 @@ function PlayerCountIllustration(count: number, isImpostor: boolean) {
 
 export default function GameSetup() {
   const [playersCount, setPlayersCount] = useGameStorage(
-    "players_cnt",
+    UserGameConfig.NUM_PLAYERS,
     MIN_PLAYERS,
   );
   const [impostorsCount, setImpostorsCount] = useGameStorage(
-    "impostors_cnt",
+    UserGameConfig.NUM_IMPOSTORS,
     MIN_IMPOSTORS,
+  );
+  const [playerNames, setPlayerNames] = useGameStorage(
+    UserGameConfig.PLAYER_NAMES,
+    Array.from({ length: playersCount }, () => ""),
   );
 
   const validatePlayersCount = (count: number): boolean => {
@@ -52,7 +61,12 @@ export default function GameSetup() {
     if (!validatePlayersCount(count)) {
       return;
     }
+    if (count <= impostorsCount) {
+      updateImpostorsCount(count - 1);
+    }
+
     setPlayersCount(count);
+    setPlayerNames(Array.from({ length: count }, () => ""));
   };
 
   const validateImpostorsCount = (count: number): boolean => {
@@ -90,17 +104,10 @@ export default function GameSetup() {
             updatePlayersCount(playersCount + 1);
           }}
           onDecrease={() => {
-            if (playersCount - 1 <= impostorsCount) {
-              updateImpostorsCount(impostorsCount - 1);
-            }
             updatePlayersCount(playersCount - 1);
           }}
           onChange={(e) => {
             const val = Number(e.target.value);
-            if (val - 1 <= impostorsCount) {
-              updateImpostorsCount(impostorsCount - 1);
-            }
-
             updatePlayersCount(val);
           }}
         />
@@ -143,7 +150,7 @@ export default function GameSetup() {
       {PlayerSelection}
       {ImpostorSelection}
       <Button asChild size="lg">
-        <Link href="/game">
+        <Link href="/players">
           <Rocket />
           start game
         </Link>
