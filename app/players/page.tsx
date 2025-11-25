@@ -5,6 +5,7 @@ import PlayerNamesInputs from "@/components/player-names-inputs";
 import PlayerNamesExplanation from "@/components/players-names-explanation";
 import { MIN_PLAYERS, UserGameConfig } from "@/lib/game-config";
 import { useGameStorage } from "@/lib/hooks/use-game-storage";
+import Image from "next/image";
 
 export default function Players() {
   const [namesEnabled, setNamesEnabled] = useGameStorage(
@@ -35,6 +36,13 @@ export default function Players() {
         setNamesEnabled={setNamesEnabled}
         playerCount={playerCount}
         playerNames={playerNames}
+      />
+      <Image
+        className="mx-auto mt-10"
+        src="/illustrations/people-table.svg"
+        alt="People sitting around a table"
+        width={200}
+        height={157}
       />
     </main>
   );
