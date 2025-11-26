@@ -3,20 +3,21 @@ import { TypographyH2, TypographyP } from "@/components/ui/typography";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 
-export default function PlayerNamesExplanation() {
+export default function GameVariantExplanation() {
   return (
     <>
       <TypographyH2 className="flex justify-between">
-        players
+        game variant
         <Button asChild variant="link">
-          <Link href="/">
-            <ChevronLeft /> change number of players
+          <Link href="/players">
+            <ChevronLeft />
+            change player names
           </Link>
         </Button>
       </TypographyH2>
       <TypographyP>
-        Fill names of the players in the order as you’re sitting in a circle for
-        increased clarity. The phone will be passed around.{" "}
+        Decide whether you want to play a phone minimal version with pen and
+        paper or fully integrated phone version.{" "}
       </TypographyP>
     </>
   );

@@ -9,4 +9,5 @@ export enum UserGameConfig {
   NUM_IMPOSTORS = "impostors_cnt",
   PLAYER_NAMES = "player_names",
   NAMES_ENABLED = "names_enabled",
+  GAME_VARIANT = "game_variant",
 }
