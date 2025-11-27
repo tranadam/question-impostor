@@ -1,43 +1,40 @@
 "use client";
+import { Player } from "@/app/types/game";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 export default function PlayerNamesActions({
   setNamesEnabled,
-  playerNames,
-  playerCount,
+  players,
+  onNext,
 }: {
   setNamesEnabled: React.Dispatch<React.SetStateAction<boolean>>;
-  playerNames: string[];
-  playerCount: number;
+  players: Player[];
+  onNext: () => void;
 }) {
-  const router = useRouter();
-
   function handleSkipNames() {
     setNamesEnabled(false);
+    onNext();
   }
 
   function handleContinueWithNames() {
     setNamesEnabled(true);
     if (
-      playerNames.filter((name) => name.trim() !== "").length !== playerCount
+      players.filter((player) => player.name.trim() !== "").length !==
+      players.length
     ) {
       toast.warning("Please fill in all player names or skip naming players.");
       return;
     }
-    router.push("/variant");
+    onNext();
   }
 
   return (
     <div className="flex justify-end gap-2">
-      <Button onClick={handleSkipNames} variant="outline" asChild>
-        <Link href="/variant">skip names</Link>
+      <Button onClick={handleSkipNames} variant="outline">
+        skip names
       </Button>
-      <Button className="cursor-pointer" onClick={handleContinueWithNames}>
-        continue
-      </Button>
+      <Button onClick={handleContinueWithNames}>continue</Button>
     </div>
   );
 }

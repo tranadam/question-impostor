@@ -3,18 +3,12 @@
 import { Button } from "@/components/ui/button";
 import NumericInput from "@/components/ui/numeric-input";
 import { TypographyMuted, TypographySmall } from "@/components/ui/typography";
-import {
-  MAX_PLAYERS,
-  MIN_IMPOSTORS,
-  MIN_PLAYERS,
-  UserGameConfig,
-} from "@/lib/game-config";
+import { MAX_PLAYERS, MIN_IMPOSTORS, MIN_PLAYERS } from "@/lib/game-config";
 import { Rocket } from "lucide-react";
 import { toast } from "sonner";
 import BasicStickman from "@/components/illustrations/basic-stickman.svg";
 import { cn } from "@/lib/utils";
-import { useGameStorage } from "@/lib/hooks/use-game-storage";
-import Link from "next/link";
+import { GameConfig } from "@/app/types/game";
 
 function PlayerCountIllustration(count: number, isImpostor: boolean) {
   const total = Array.from({ length: count }, (_, i) => i);
@@ -33,57 +27,52 @@ function PlayerCountIllustration(count: number, isImpostor: boolean) {
   );
 }
 
-export default function GameSetup() {
-  const [playersCount, setPlayersCount] = useGameStorage(
-    UserGameConfig.NUM_PLAYERS,
-    MIN_PLAYERS,
-  );
-  const [impostorsCount, setImpostorsCount] = useGameStorage(
-    UserGameConfig.NUM_IMPOSTORS,
-    MIN_IMPOSTORS,
-  );
-  const [playerNames, setPlayerNames] = useGameStorage(
-    UserGameConfig.PLAYER_NAMES,
-    Array.from({ length: playersCount }, () => ""),
-  );
-
+export default function GameSetup({
+  config,
+  updateConfig,
+  onNext,
+}: {
+  config: GameConfig;
+  updateConfig: (config: Partial<GameConfig>) => void;
+  onNext: () => void;
+}) {
   const validatePlayersCount = (count: number): boolean => {
-    if (count < MIN_PLAYERS || count > MAX_PLAYERS) {
-      toast.warning(
-        `Number of players must be between ${MIN_PLAYERS} and ${MAX_PLAYERS}`,
-      );
-      return false;
-    }
-    return true;
+    return count >= MIN_PLAYERS && count <= MAX_PLAYERS;
   };
 
   const updatePlayersCount = (count: number) => {
     if (!validatePlayersCount(count)) {
+      toast.warning(
+        `Number of players must be between ${MIN_PLAYERS} and ${MAX_PLAYERS}`,
+      );
       return;
     }
-    if (count <= impostorsCount) {
+    if (count <= config.impostorCount) {
       updateImpostorsCount(count - 1);
     }
 
-    setPlayersCount(count);
-    setPlayerNames(Array.from({ length: count }, () => ""));
+    updateConfig({
+      totalPlayers: count,
+      players: Array.from({ length: count }, (_, i) => ({
+        id: i,
+        name: "",
+        isImpostor: false,
+      })),
+    });
   };
 
   const validateImpostorsCount = (count: number): boolean => {
-    if (count < MIN_IMPOSTORS || count >= playersCount) {
-      toast.warning(
-        "At least one impostor is required, at most players minus one.",
-      );
-      return false;
-    }
-    return true;
+    return count >= MIN_IMPOSTORS && count < config.totalPlayers;
   };
 
   const updateImpostorsCount = (count: number) => {
     if (!validateImpostorsCount(count)) {
+      toast.warning(
+        "At least one impostor is required, at most all players except one.",
+      );
       return;
     }
-    setImpostorsCount(count);
+    updateConfig({ impostorCount: count });
   };
 
   const calcRecommendedImpostors = (players: number): number => {
@@ -99,19 +88,19 @@ export default function GameSetup() {
       </TypographySmall>
       <div className="flex items-center gap-4">
         <NumericInput
-          value={playersCount}
+          value={config.totalPlayers}
           onIncrease={() => {
-            updatePlayersCount(playersCount + 1);
+            updatePlayersCount(config.totalPlayers + 1);
           }}
           onDecrease={() => {
-            updatePlayersCount(playersCount - 1);
+            updatePlayersCount(config.totalPlayers - 1);
           }}
           onChange={(e) => {
             const val = Number(e.target.value);
             updatePlayersCount(val);
           }}
         />
-        {PlayerCountIllustration(playersCount, false)}
+        {PlayerCountIllustration(config.totalPlayers, false)}
       </div>
     </div>
   );
@@ -123,24 +112,24 @@ export default function GameSetup() {
       </TypographySmall>
       <div className="flex items-center gap-4">
         <NumericInput
-          value={impostorsCount}
+          value={config.impostorCount}
           onIncrease={() => {
-            updateImpostorsCount(impostorsCount + 1);
+            updateImpostorsCount(config.impostorCount + 1);
           }}
           onDecrease={() => {
-            updateImpostorsCount(impostorsCount - 1);
+            updateImpostorsCount(config.impostorCount - 1);
           }}
           onChange={(e) => {
             const val = Number(e.target.value);
             updateImpostorsCount(val);
           }}
         />
-        {PlayerCountIllustration(impostorsCount, true)}
+        {PlayerCountIllustration(config.impostorCount, true)}
       </div>
       <TypographyMuted className="mt-2">
-        recommended {calcRecommendedImpostors(playersCount)} impostor
-        {calcRecommendedImpostors(playersCount) > 1 && "s"} for {playersCount}{" "}
-        players
+        recommended {calcRecommendedImpostors(config.totalPlayers)} impostor
+        {calcRecommendedImpostors(config.totalPlayers) > 1 && "s"} for{" "}
+        {config.totalPlayers} players
       </TypographyMuted>
     </div>
   );
@@ -149,11 +138,9 @@ export default function GameSetup() {
     <section className="flex flex-col gap-6">
       {PlayerSelection}
       {ImpostorSelection}
-      <Button asChild size="lg">
-        <Link href="/players">
-          <Rocket />
-          start game
-        </Link>
+      <Button onClick={onNext} size="lg">
+        <Rocket />
+        start game
       </Button>
     </section>
   );

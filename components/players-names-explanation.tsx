@@ -1,17 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { TypographyH2, TypographyP } from "@/components/ui/typography";
 import { ChevronLeft } from "lucide-react";
-import Link from "next/link";
 
-export default function PlayerNamesExplanation() {
+export default function PlayerNamesExplanation({
+  onPrev,
+}: {
+  onPrev: () => void;
+}) {
   return (
     <>
       <TypographyH2 className="flex justify-between">
         players
-        <Button asChild variant="link">
-          <Link href="/">
-            <ChevronLeft /> change number of players
-          </Link>
+        <Button onClick={onPrev} variant="link">
+          <ChevronLeft /> change number of players
         </Button>
       </TypographyH2>
       <TypographyP>

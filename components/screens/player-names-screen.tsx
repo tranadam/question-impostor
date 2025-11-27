@@ -1,41 +1,41 @@
 "use client";
 
+import { GameConfig, Player } from "@/app/types/game";
 import PlayerNamesActions from "@/components/player-names-actions";
 import PlayerNamesInputs from "@/components/player-names-inputs";
 import PlayerNamesExplanation from "@/components/players-names-explanation";
-import { MIN_PLAYERS, UserGameConfig } from "@/lib/game-config";
-import { useGameStorage } from "@/lib/hooks/use-game-storage";
 import Image from "next/image";
 
-export default function Players() {
-  const [namesEnabled, setNamesEnabled] = useGameStorage(
-    UserGameConfig.NAMES_ENABLED,
-    true,
-  );
-
-  const [playerCount, setPlayersCount] = useGameStorage(
-    UserGameConfig.NUM_PLAYERS,
-    MIN_PLAYERS,
-  );
-
-  const [playerNames, setPlayerNames] = useGameStorage(
-    UserGameConfig.PLAYER_NAMES,
-    Array.from({ length: playerCount }, () => ""),
-  );
-
+export default function PlayerNamesScreen({
+  config,
+  updateConfig,
+  onNext,
+  onPrev,
+}: {
+  config: GameConfig;
+  updateConfig: (config: Partial<GameConfig>) => void;
+  onNext: () => void;
+  onPrev: () => void;
+}) {
+  const setPlayerNames = (players: Player[]) => {
+    updateConfig({ players });
+  };
+  const setNamesEnabled = () => {
+    updateConfig({ namesEnabled: true });
+  };
   return (
     <main className="mx-auto mb-16 max-w-2xl px-4">
-      <PlayerNamesExplanation />
+      <PlayerNamesExplanation onPrev={onPrev} />
       <div className="mt-4 mb-8">
         <PlayerNamesInputs
-          playerNames={playerNames}
+          players={config.players}
           setPlayerNames={setPlayerNames}
         />
       </div>
       <PlayerNamesActions
         setNamesEnabled={setNamesEnabled}
-        playerCount={playerCount}
-        playerNames={playerNames}
+        players={config.players}
+        onNext={onNext}
       />
       <Image
         className="mx-auto mt-10"

@@ -1,24 +1,28 @@
+import { Player } from "@/app/types/game";
 import { Input } from "@/components/ui/input";
 
 export default function PlayerNamesInputs({
-  playerNames,
+  players,
   setPlayerNames,
 }: {
-  playerNames: string[];
-  setPlayerNames: React.Dispatch<React.SetStateAction<string[]>>;
+  players: Player[];
+  setPlayerNames: (p: Player[]) => void;
 }) {
   return (
     <div className="flex flex-col gap-2">
-      {playerNames.map((name, i) => (
+      {players.map((player) => (
         <Input
-          key={i}
+          key={player.id}
           type="text"
-          placeholder={`Player ${i + 1}`}
-          value={name}
+          placeholder={`Player ${player.id}`}
+          value={player.name}
           onChange={(e) => {
-            const newNames = [...playerNames];
-            newNames[i] = e.target.value;
-            setPlayerNames(newNames);
+            const newPlayers = [...players];
+            const index = newPlayers.findIndex(p => p.id === player.id);
+            if (index !== -1) {
+              newPlayers[index] = { ...newPlayers[index], name: e.target.value };
+              setPlayerNames(newPlayers);
+            }
           }}
         />
       ))}

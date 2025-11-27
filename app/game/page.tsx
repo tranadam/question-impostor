@@ -1,3 +1,5 @@
+import QuestionForm from "@/components/question-form";
+
 export default function GamePage() {
-  return <div>Game Page</div>;
+  return <QuestionForm />;
 }

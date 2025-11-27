@@ -27,7 +27,7 @@ export function IconCard({
   return (
     <button
       className={cn(
-        "bg-card text-card-foreground w-full cursor-pointer rounded-lg border px-2 py-4 text-center shadow-sm",
+        "bg-card text-card-foreground w-full rounded-lg border px-2 py-4 text-center shadow-sm",
         active && "ring-primary/50 ring-2",
         disabled && "cursor-not-allowed opacity-50",
         className,

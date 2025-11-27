@@ -1,13 +1,17 @@
+import { GameConfig } from "@/app/types/game";
+
 export const MAX_PLAYERS = 12;
 
 export const MIN_PLAYERS = 3;
 
 export const MIN_IMPOSTORS = 1;
 
-export enum UserGameConfig {
-  NUM_PLAYERS = "players_cnt",
-  NUM_IMPOSTORS = "impostors_cnt",
-  PLAYER_NAMES = "player_names",
-  NAMES_ENABLED = "names_enabled",
-  GAME_VARIANT = "game_variant",
-}
+export const INITIAL_GAME_CONFIG: GameConfig = {
+  totalPlayers: MIN_PLAYERS,
+  impostorCount: MIN_IMPOSTORS,
+  players: [],
+  gameType: "paper",
+  namesEnabled: true,
+  mainQuestion: "",
+  impostorQuestion: "",
+};

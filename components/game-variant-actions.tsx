@@ -1,49 +1,50 @@
 "use client";
+
 import { IconCard } from "@/components/ui/icon-card";
 import PenAndPaper from "@/components/illustrations/pen-and-paper.svg";
 import Phone from "@/components/illustrations/phone.svg";
 import { Button } from "@/components/ui/button";
-import { useGameStorage } from "@/lib/hooks/use-game-storage";
-import { UserGameConfig } from "@/lib/game-config";
-import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
+import { GameConfig } from "@/app/types/game";
 
-export function GameVariantActions() {
-  const router = useRouter();
-
-  const [gameVariant, setGameVariant] = useGameStorage<
-    "pen-and-paper" | "mobile" | null
-  >(UserGameConfig.GAME_VARIANT, null);
-
+export function GameVariantActions({
+  config,
+  updateConfig,
+  onNext,
+}: {
+  config: GameConfig;
+  updateConfig: (config: Partial<GameConfig>) => void;
+  onNext: () => void;
+}) {
   const handleStartGame = () => {
-    if (gameVariant === null) return;
+    if (config.gameType === null) return;
 
-    router.push("/game");
+    onNext();
   };
 
   return (
     <section>
       <div className="mb-4 grid grid-cols-2 gap-2">
         <IconCard
-          onClick={() => setGameVariant("pen-and-paper")}
+          onClick={() => updateConfig({ gameType: "paper" })}
           heading="Pen & Paper"
           description="Every player writes their answer on paper"
           icon={PenAndPaper}
-          active={gameVariant === "pen-and-paper"}
+          active={config.gameType === "paper"}
         />
         <IconCard
-          onClick={() => setGameVariant("mobile")}
+          onClick={() => updateConfig({ gameType: "mobile" })}
           heading="Mobile"
           description="Players write their answers directly into the phone"
           icon={Phone}
-          active={gameVariant === "mobile"}
+          active={config.gameType === "mobile"}
           disabled
         />
       </div>
       <Button
         onClick={handleStartGame}
-        disabled={gameVariant === null}
-        className="w-full cursor-pointer"
+        disabled={config.gameType === null}
+        className="w-full"
       >
         <ArrowRight />
         choose mode

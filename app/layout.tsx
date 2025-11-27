@@ -11,7 +11,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Impostor Game | Setup",
+  title: "Impostor Game",
   description: "Play the impostor game with friends locally!",
 };
 

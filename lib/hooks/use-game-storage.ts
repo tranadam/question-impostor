@@ -1,8 +1,9 @@
 "use client";
 
+import { StorageKeys } from "@/app/types/game";
 import { useEffect, useState } from "react";
 
-export function useGameStorage<T>(key: UserGameConfig, initialValue: T) {
+export function useGameStorage<T>(key: StorageKeys, initialValue: T) {
   const [value, setValue] = useState<T>(initialValue);
   const [hydrated, setHydrated] = useState(false);
 
