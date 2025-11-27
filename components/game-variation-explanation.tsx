@@ -11,7 +11,7 @@ export default function GameVariantExplanation() {
         <Button asChild variant="link">
           <Link href="/players">
             <ChevronLeft />
-            change player names
+            change names
           </Link>
         </Button>
       </TypographyH2>

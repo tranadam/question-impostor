@@ -3,10 +3,10 @@ import { IconCard } from "@/components/ui/icon-card";
 import PenAndPaper from "@/components/illustrations/pen-and-paper.svg";
 import Phone from "@/components/illustrations/phone.svg";
 import { Button } from "@/components/ui/button";
-import { Rocket } from "lucide-react";
 import { useGameStorage } from "@/lib/hooks/use-game-storage";
 import { UserGameConfig } from "@/lib/game-config";
 import { useRouter } from "next/navigation";
+import { ArrowRight } from "lucide-react";
 
 export function GameVariantActions() {
   const router = useRouter();
@@ -37,6 +37,7 @@ export function GameVariantActions() {
           description="Players write their answers directly into the phone"
           icon={Phone}
           active={gameVariant === "mobile"}
+          disabled
         />
       </div>
       <Button
@@ -44,8 +45,8 @@ export function GameVariantActions() {
         disabled={gameVariant === null}
         className="w-full cursor-pointer"
       >
-        <Rocket />
-        start the game
+        <ArrowRight />
+        choose mode
       </Button>
     </section>
   );
