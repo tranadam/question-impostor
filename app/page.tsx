@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { GameConfig, GameScreen, StorageKeys } from "./types/game";
+import { GameConfig, SetupScreen, StorageKeys } from "./types/game";
 import { INITIAL_GAME_CONFIG } from "@/lib/game-config";
 import LandingScreen from "@/components/screens/landing-screen";
 import PlayerNamesScreen from "@/components/screens/player-names-screen";
@@ -12,9 +12,9 @@ import { useGameStorage } from "@/lib/hooks/use-game-storage";
 export default function SetupWizard() {
   const router = useRouter();
 
-  const [currentScreen, setCurrentScreen] = useGameStorage<GameScreen>(
-    StorageKeys.CURRENT_STEP,
-    GameScreen.LANDING,
+  const [currentScreen, setCurrentScreen] = useGameStorage<SetupScreen>(
+    StorageKeys.CURRENT_SETUP_SCREEN,
+    SetupScreen.LANDING,
   );
 
   const [config, setConfig] = useState<GameConfig>(INITIAL_GAME_CONFIG);
@@ -32,14 +32,14 @@ export default function SetupWizard() {
 
   return (
     <>
-      {currentScreen === GameScreen.LANDING && (
+      {currentScreen === SetupScreen.LANDING && (
         <LandingScreen
           config={config}
           updateConfig={updateConfig}
           onNext={nextScreen}
         />
       )}
-      {currentScreen === GameScreen.PLAYER_NAMES && (
+      {currentScreen === SetupScreen.PLAYER_NAMES && (
         <PlayerNamesScreen
           config={config}
           updateConfig={updateConfig}
@@ -47,7 +47,7 @@ export default function SetupWizard() {
           onNext={nextScreen}
         />
       )}
-      {currentScreen === GameScreen.VARIANT && (
+      {currentScreen === SetupScreen.VARIANT && (
         <VariantScreen
           config={config}
           updateConfig={updateConfig}

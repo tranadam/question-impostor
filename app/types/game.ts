@@ -1,7 +1,14 @@
-export enum GameScreen {
+export enum SetupScreen {
   LANDING,
   PLAYER_NAMES,
   VARIANT,
+}
+
+export enum GameScreen {
+  QUESTION_FORM,
+  PLAYER_ROLES,
+  REVEAL,
+  VOTING,
 }
 
 export interface Player {
@@ -22,5 +29,6 @@ export interface GameConfig {
 
 export enum StorageKeys {
   GAME_CONFIG = "game_config",
-  CURRENT_STEP = "current_step",
+  CURRENT_SETUP_SCREEN = "current_setup_screen",
+  CURRENT_GAME_SCREEN = "current_game_screen",
 }
