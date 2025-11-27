@@ -1,6 +1,6 @@
 "use client";
 
-import { GameConfig, StorageKeys } from "@/app/types/game";
+import { GameConfig } from "@/app/types/game";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -8,39 +8,55 @@ import {
   TypographyMuted,
   TypographySmall,
 } from "@/components/ui/typography";
-import { INITIAL_GAME_CONFIG } from "@/lib/game-config";
-import { useGameStorage } from "@/lib/hooks/use-game-storage";
 import { Dices, Sparkles } from "lucide-react";
+import { toast } from "sonner";
 
-export default function QuestionForm() {
-  const [gameConfig, setGameConfig] = useGameStorage<GameConfig>(
-    StorageKeys.GAME_CONFIG,
-    INITIAL_GAME_CONFIG,
-  );
+export default function QuestionForm({
+  config,
+  updateConfig,
+  onNext,
+}: {
+  config: GameConfig;
+  updateConfig: (config: Partial<GameConfig>) => void;
+  onNext: () => void;
+}) {
+  const handleAIInspiration = () => {
+    toast.warning("AI inspiration coming soon! (surely)");
+    return;
+  };
+
   return (
     <section className="flex flex-col gap-8">
       <TypographyH2>Questions</TypographyH2>
       <div className="flex flex-col gap-1">
         <TypographySmall>main question</TypographySmall>
-        <Input placeholder="Favourite place in Seoul?" />
+        <Input
+          value={config.mainQuestion}
+          onChange={(e) => updateConfig({ mainQuestion: e.target.value })}
+          placeholder="Favourite place in Seoul?"
+        />
         <TypographyMuted>
-          {gameConfig.totalPlayers} players see this question
+          {config.totalPlayers} players see this question
         </TypographyMuted>
       </div>
       <div className="flex flex-col gap-1">
         <TypographySmall>impostor question</TypographySmall>
-        <Input placeholder="First place you visited in Seoul?" />
+        <Input
+          value={config.impostorQuestion}
+          onChange={(e) => updateConfig({ impostorQuestion: e.target.value })}
+          placeholder="First place you visited in Seoul?"
+        />
         <TypographyMuted>
-          {gameConfig.impostorCount} impostor
-          {gameConfig.impostorCount > 1 ? "s" : ""} see this question
+          {config.impostorCount} impostor
+          {config.impostorCount > 1 ? "s" : ""} see this question
         </TypographyMuted>
       </div>
       <div className="flex flex-col gap-2">
-        <Button variant="outline">
+        <Button onClick={handleAIInspiration} variant="outline">
           <Sparkles />
           get inspired by ai
         </Button>
-        <Button>
+        <Button onClick={onNext}>
           <Dices />
           let&apos;s play
         </Button>

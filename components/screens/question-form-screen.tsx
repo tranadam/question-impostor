@@ -1,6 +1,5 @@
 import { GameConfig } from "@/app/types/game";
 import QuestionForm from "@/components/question-form";
-import Rules from "@/components/rules";
 
 export default function QuestionFormScreen({
   config,
@@ -13,7 +12,11 @@ export default function QuestionFormScreen({
 }) {
   return (
     <main className="mx-auto mb-16 max-w-2xl px-4">
-      <QuestionForm />
+      <QuestionForm
+        config={config}
+        updateConfig={updateConfig}
+        onNext={onNext}
+      />
     </main>
   );
 }

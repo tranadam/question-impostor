@@ -17,7 +17,10 @@ export default function SetupWizard() {
     SetupScreen.LANDING,
   );
 
-  const [config, setConfig] = useState<GameConfig>(INITIAL_GAME_CONFIG);
+  const [config, setConfig] = useGameStorage<GameConfig>(
+    StorageKeys.GAME_CONFIG,
+    INITIAL_GAME_CONFIG,
+  );
 
   const updateConfig = (updates: Partial<GameConfig>) => {
     setConfig((prev) => ({ ...prev, ...updates }));
