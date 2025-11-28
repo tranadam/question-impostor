@@ -88,6 +88,7 @@ export default function GameSetup({
       </TypographySmall>
       <div className="flex items-center gap-4">
         <NumericInput
+          size="lg"
           value={config.totalPlayers}
           onIncrease={() => {
             updatePlayersCount(config.totalPlayers + 1);
@@ -112,6 +113,7 @@ export default function GameSetup({
       </TypographySmall>
       <div className="flex items-center gap-4">
         <NumericInput
+          size="lg"
           value={config.impostorCount}
           onIncrease={() => {
             updateImpostorsCount(config.impostorCount + 1);

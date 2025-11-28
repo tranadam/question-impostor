@@ -5,6 +5,7 @@ import { useGameStorage } from "@/lib/hooks/use-game-storage";
 import { GameConfig, GameScreen, StorageKeys } from "@/types/game";
 import QuestionFormScreen from "@/components/screens/question-form-screen";
 import QuestionRevealScreen from "@/components/screens/question-reveal-screen";
+import VotingScreen from "@/components/screens/voting-screen";
 
 export default function Game() {
   const [currentGameScreen, setCurrentGameScreen] = useGameStorage<GameScreen>(
@@ -39,7 +40,13 @@ export default function Game() {
           onNext={nextScreen}
         />
       )}
-      {currentGameScreen === GameScreen.VOTING && <div>voting screen</div>}
+      {currentGameScreen === GameScreen.VOTING && (
+        <VotingScreen
+          config={config}
+          updateConfig={updateConfig}
+          onNext={() => setCurrentGameScreen(GameScreen.QUESTION_FORM)}
+        />
+      )}
     </>
   );
 }
