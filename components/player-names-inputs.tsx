@@ -1,4 +1,4 @@
-import { Player } from "@/app/types/game";
+import { Player } from "@/types/game";
 import { Input } from "@/components/ui/input";
 
 export default function PlayerNamesInputs({
@@ -14,13 +14,16 @@ export default function PlayerNamesInputs({
         <Input
           key={player.id}
           type="text"
-          placeholder={`Player ${player.id}`}
+          placeholder={`Player ${player.id + 1}`}
           value={player.name}
           onChange={(e) => {
             const newPlayers = [...players];
-            const index = newPlayers.findIndex(p => p.id === player.id);
+            const index = newPlayers.findIndex((p) => p.id === player.id);
             if (index !== -1) {
-              newPlayers[index] = { ...newPlayers[index], name: e.target.value };
+              newPlayers[index] = {
+                ...newPlayers[index],
+                name: e.target.value,
+              };
               setPlayerNames(newPlayers);
             }
           }}

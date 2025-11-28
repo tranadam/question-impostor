@@ -5,7 +5,7 @@ import PenAndPaper from "@/components/illustrations/pen-and-paper.svg";
 import Phone from "@/components/illustrations/phone.svg";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { GameConfig } from "@/app/types/game";
+import { GameConfig } from "@/types/game";
 
 export function GameVariantActions({
   config,

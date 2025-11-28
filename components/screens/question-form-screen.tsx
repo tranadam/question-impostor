@@ -1,4 +1,4 @@
-import { GameConfig } from "@/app/types/game";
+import { GameConfig } from "@/types/game";
 import QuestionForm from "@/components/question-form";
 
 export default function QuestionFormScreen({
@@ -14,7 +14,10 @@ export default function QuestionFormScreen({
     <main className="mx-auto mb-16 max-w-2xl px-4">
       <QuestionForm
         config={config}
-        updateConfig={updateConfig}
+        setMainQuestion={(q: string) => updateConfig({ mainQuestion: q })}
+        setImpostorQuestion={(q: string) =>
+          updateConfig({ impostorQuestion: q })
+        }
         onNext={onNext}
       />
     </main>

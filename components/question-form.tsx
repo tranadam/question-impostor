@@ -1,6 +1,6 @@
 "use client";
 
-import { GameConfig } from "@/app/types/game";
+import { GameConfig } from "@/types/game";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -13,11 +13,13 @@ import { toast } from "sonner";
 
 export default function QuestionForm({
   config,
-  updateConfig,
+  setMainQuestion,
+  setImpostorQuestion,
   onNext,
 }: {
   config: GameConfig;
-  updateConfig: (config: Partial<GameConfig>) => void;
+  setMainQuestion: (mainQuestion: string) => void;
+  setImpostorQuestion: (impostorQuestion: string) => void;
   onNext: () => void;
 }) {
   const handleAIInspiration = () => {
@@ -32,7 +34,7 @@ export default function QuestionForm({
         <TypographySmall>main question</TypographySmall>
         <Input
           value={config.mainQuestion}
-          onChange={(e) => updateConfig({ mainQuestion: e.target.value })}
+          onChange={(e) => setMainQuestion(e.target.value)}
           placeholder="Favourite place in Seoul?"
         />
         <TypographyMuted>
@@ -43,7 +45,7 @@ export default function QuestionForm({
         <TypographySmall>impostor question</TypographySmall>
         <Input
           value={config.impostorQuestion}
-          onChange={(e) => updateConfig({ impostorQuestion: e.target.value })}
+          onChange={(e) => setImpostorQuestion(e.target.value)}
           placeholder="First place you visited in Seoul?"
         />
         <TypographyMuted>

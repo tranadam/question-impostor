@@ -1,4 +1,4 @@
-import { GameConfig } from "@/app/types/game";
+import { GameConfig } from "@/types/game";
 import GameSetup from "@/components/game-setup";
 import Rules from "@/components/rules";
 

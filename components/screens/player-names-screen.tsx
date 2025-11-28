@@ -1,6 +1,6 @@
 "use client";
 
-import { GameConfig, Player } from "@/app/types/game";
+import { GameConfig, Player } from "@/types/game";
 import PlayerNamesActions from "@/components/player-names-actions";
 import PlayerNamesInputs from "@/components/player-names-inputs";
 import PlayerNamesExplanation from "@/components/players-names-explanation";
@@ -20,8 +20,8 @@ export default function PlayerNamesScreen({
   const setPlayerNames = (players: Player[]) => {
     updateConfig({ players });
   };
-  const setNamesEnabled = () => {
-    updateConfig({ namesEnabled: true });
+  const setNamesEnabled = (enabled: boolean) => {
+    updateConfig({ namesEnabled: enabled });
   };
   return (
     <main className="mx-auto mb-16 max-w-2xl px-4">

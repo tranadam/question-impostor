@@ -8,7 +8,7 @@ import { Rocket } from "lucide-react";
 import { toast } from "sonner";
 import BasicStickman from "@/components/illustrations/basic-stickman.svg";
 import { cn } from "@/lib/utils";
-import { GameConfig } from "@/app/types/game";
+import { GameConfig } from "@/types/game";
 
 function PlayerCountIllustration(count: number, isImpostor: boolean) {
   const total = Array.from({ length: count }, (_, i) => i);

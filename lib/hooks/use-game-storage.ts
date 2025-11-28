@@ -1,6 +1,6 @@
 "use client";
 
-import { StorageKeys } from "@/app/types/game";
+import { StorageKeys } from "@/types/game";
 import { useEffect, useState } from "react";
 
 export function useGameStorage<T>(key: StorageKeys, initialValue: T) {

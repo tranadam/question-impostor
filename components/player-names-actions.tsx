@@ -1,5 +1,5 @@
 "use client";
-import { Player } from "@/app/types/game";
+import { Player } from "@/types/game";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
@@ -8,7 +8,7 @@ export default function PlayerNamesActions({
   players,
   onNext,
 }: {
-  setNamesEnabled: React.Dispatch<React.SetStateAction<boolean>>;
+  setNamesEnabled: (enabled: boolean) => void;
   players: Player[];
   onNext: () => void;
 }) {

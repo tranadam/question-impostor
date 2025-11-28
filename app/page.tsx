@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { GameConfig, SetupScreen, StorageKeys } from "./types/game";
+import { GameConfig, GameScreen, SetupScreen, StorageKeys } from "@/types/game";
 import { INITIAL_GAME_CONFIG } from "@/lib/game-config";
 import LandingScreen from "@/components/screens/landing-screen";
 import PlayerNamesScreen from "@/components/screens/player-names-screen";
@@ -12,9 +11,14 @@ import { useGameStorage } from "@/lib/hooks/use-game-storage";
 export default function SetupWizard() {
   const router = useRouter();
 
-  const [currentScreen, setCurrentScreen] = useGameStorage<SetupScreen>(
-    StorageKeys.CURRENT_SETUP_SCREEN,
-    SetupScreen.LANDING,
+  const [currentSetupScreen, setCurrentSetupScreen] =
+    useGameStorage<SetupScreen>(
+      StorageKeys.CURRENT_SETUP_SCREEN,
+      SetupScreen.LANDING,
+    );
+  const [currentGameScreen, setCurrentGameScreen] = useGameStorage<GameScreen>(
+    StorageKeys.CURRENT_GAME_SCREEN,
+    GameScreen.QUESTION_FORM,
   );
 
   const [config, setConfig] = useGameStorage<GameConfig>(
@@ -27,22 +31,22 @@ export default function SetupWizard() {
   };
 
   const startGame = () => {
-    // TODO: Save to session storage
+    setCurrentGameScreen(GameScreen.QUESTION_FORM);
     router.push("/game");
   };
-  const nextScreen = () => setCurrentScreen((prev) => prev + 1);
-  const prevScreen = () => setCurrentScreen((prev) => prev - 1);
+  const nextScreen = () => setCurrentSetupScreen((prev) => prev + 1);
+  const prevScreen = () => setCurrentSetupScreen((prev) => prev - 1);
 
   return (
     <>
-      {currentScreen === SetupScreen.LANDING && (
+      {currentSetupScreen === SetupScreen.LANDING && (
         <LandingScreen
           config={config}
           updateConfig={updateConfig}
           onNext={nextScreen}
         />
       )}
-      {currentScreen === SetupScreen.PLAYER_NAMES && (
+      {currentSetupScreen === SetupScreen.PLAYER_NAMES && (
         <PlayerNamesScreen
           config={config}
           updateConfig={updateConfig}
@@ -50,7 +54,7 @@ export default function SetupWizard() {
           onNext={nextScreen}
         />
       )}
-      {currentScreen === SetupScreen.VARIANT && (
+      {currentSetupScreen === SetupScreen.VARIANT && (
         <VariantScreen
           config={config}
           updateConfig={updateConfig}

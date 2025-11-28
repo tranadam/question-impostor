@@ -2,11 +2,12 @@
 
 import { INITIAL_GAME_CONFIG } from "@/lib/game-config";
 import { useGameStorage } from "@/lib/hooks/use-game-storage";
-import { GameConfig, GameScreen, StorageKeys } from "@/app/types/game";
+import { GameConfig, GameScreen, StorageKeys } from "@/types/game";
 import QuestionFormScreen from "@/components/screens/question-form-screen";
+import QuestionRevealScreen from "@/components/screens/question-reveal-screen";
 
 export default function Game() {
-  const [currentScreen, setCurrentScreen] = useGameStorage<GameScreen>(
+  const [currentGameScreen, setCurrentGameScreen] = useGameStorage<GameScreen>(
     StorageKeys.CURRENT_GAME_SCREEN,
     GameScreen.QUESTION_FORM,
   );
@@ -20,12 +21,19 @@ export default function Game() {
     setConfig((prev) => ({ ...prev, ...updates }));
   };
 
-  const nextScreen = () => setCurrentScreen((prev) => prev);
+  const nextScreen = () => setCurrentGameScreen((prev) => prev + 1);
 
   return (
     <>
-      {currentScreen === GameScreen.QUESTION_FORM && (
+      {currentGameScreen === GameScreen.QUESTION_FORM && (
         <QuestionFormScreen
+          config={config}
+          updateConfig={updateConfig}
+          onNext={nextScreen}
+        />
+      )}
+      {currentGameScreen === GameScreen.QUESTION_REVEAL && (
+        <QuestionRevealScreen
           config={config}
           updateConfig={updateConfig}
           onNext={nextScreen}
