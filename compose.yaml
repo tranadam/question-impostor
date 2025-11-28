@@ -1,0 +1,11 @@
+services:
+  impostor-nextjs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: impostor-app
+    restart: unless-stopped
+    ports:
+      - "8302:3000"
+    environment:
+      - NODE_ENV=production
