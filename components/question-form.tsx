@@ -38,7 +38,7 @@ export default function QuestionForm({
           placeholder="Favourite place in Seoul?"
         />
         <TypographyMuted>
-          {config.totalPlayers} players see this question
+          {config.totalPlayers - config.impostorCount} players see this question
         </TypographyMuted>
       </div>
       <div className="flex flex-col gap-1">
