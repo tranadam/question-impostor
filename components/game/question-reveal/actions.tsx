@@ -1,7 +1,8 @@
+import QuestionCard from "@/components/game/question-reveal/question-card";
 import { Button } from "@/components/ui/button";
-import { TypographyP } from "@/components/ui/typography";
 import { GameConfig } from "@/types/game";
 import { ArrowRight } from "lucide-react";
+import { useState } from "react";
 
 export default function QuestionRevealAction({
   mainQuestion,
@@ -17,6 +18,8 @@ export default function QuestionRevealAction({
   setCurrentPlayerIdx: (idx: number) => void;
   onNext: () => void;
 }) {
+  const [nextReady, setNextReady] = useState(false);
+
   const question = players[currentPlayerIdx].isImpostor
     ? impostorQuestion
     : mainQuestion;
@@ -31,9 +34,13 @@ export default function QuestionRevealAction({
 
   return (
     <section className="mt-8">
-      <TypographyP>{question}</TypographyP>
+      <QuestionCard question={question} setNextReady={setNextReady} />
       <div className="flex justify-end">
-        <Button className="mt-8" onClick={handleNextPlayer}>
+        <Button
+          disabled={!nextReady}
+          className="mt-8"
+          onClick={handleNextPlayer}
+        >
           <ArrowRight />
           continue
         </Button>
