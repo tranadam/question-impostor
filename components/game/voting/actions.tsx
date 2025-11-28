@@ -8,11 +8,13 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 function PlayersVotingList({
+  namesEnabled,
   players,
   votes,
   setVotes,
   submitted,
 }: {
+  namesEnabled: boolean;
   players: Player[];
   votes: Record<number, number>;
   setVotes: React.Dispatch<React.SetStateAction<Record<number, number>>>;
@@ -36,7 +38,9 @@ function PlayersVotingList({
               : "bg-card",
           )}
         >
-          <TypographySmall>{player.name}</TypographySmall>
+          <TypographySmall>
+            {namesEnabled ? player.name : "Player " + player.id}
+          </TypographySmall>
           <NumericInput
             size="sm"
             value={votes[player.id]}
@@ -57,9 +61,10 @@ function PlayersVotingList({
 
 export default function VotingActions({
   players,
+  namesEnabled,
   updateConfig,
   onNext,
-}: Pick<GameConfig, "players"> & {
+}: Pick<GameConfig, "players" | "namesEnabled"> & {
   updateConfig: (config: Partial<GameConfig>) => void;
   onNext: () => void;
 }) {
@@ -97,13 +102,13 @@ export default function VotingActions({
       .reduce((sum, [, count]) => sum + count, 0);
 
     if (impostorVotes > totalVotes / 2) {
-      toast.success(
+      toast.info(
         `Crewmates win! ${impostorVotes} out of ${totalVotes} votes were for the impostor.`,
         { duration: 8000 },
       );
       return;
     } else {
-      toast.error(
+      toast.info(
         `Impostor wins! Only ${impostorVotes} out of ${totalVotes} votes were for the impostor.`,
         { duration: 8000 },
       );
@@ -113,6 +118,7 @@ export default function VotingActions({
   return (
     <div>
       <PlayersVotingList
+        namesEnabled={namesEnabled}
         players={players}
         votes={votes}
         setVotes={setVotes}

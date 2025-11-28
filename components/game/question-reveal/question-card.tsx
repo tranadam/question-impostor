@@ -1,17 +1,18 @@
-"use client";
 import { TypographyH4 } from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
 import { Eye } from "lucide-react";
-import { useState } from "react";
 
 export default function QuestionCard({
   question,
   setNextReady,
+  revealed,
+  setRevealed,
 }: {
   question: string;
   setNextReady: React.Dispatch<React.SetStateAction<boolean>>;
+  revealed: boolean;
+  setRevealed: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const [revealed, setRevealed] = useState(false);
   return (
     <button
       onClick={() => {

@@ -19,6 +19,7 @@ export default function QuestionRevealAction({
   onNext: () => void;
 }) {
   const [nextReady, setNextReady] = useState(false);
+  const [cardRevealed, setCardRevealed] = useState(false);
 
   const question = players[currentPlayerIdx].isImpostor
     ? impostorQuestion
@@ -29,12 +30,19 @@ export default function QuestionRevealAction({
       onNext();
       return;
     }
+    setCardRevealed(false);
+    setNextReady(false);
     setCurrentPlayerIdx(currentPlayerIdx + 1);
   };
 
   return (
     <section className="mt-8">
-      <QuestionCard question={question} setNextReady={setNextReady} />
+      <QuestionCard
+        question={question}
+        setNextReady={setNextReady}
+        revealed={cardRevealed}
+        setRevealed={setCardRevealed}
+      />
       <div className="flex justify-end">
         <Button
           disabled={!nextReady}
