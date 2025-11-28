@@ -39,6 +39,7 @@ export default function Game() {
           onNext={nextScreen}
         />
       )}
+      {currentGameScreen === GameScreen.VOTING && <div>voting screen</div>}
     </>
   );
 }
