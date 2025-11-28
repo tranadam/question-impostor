@@ -34,34 +34,27 @@ export default function SetupWizard() {
     setCurrentGameScreen(GameScreen.QUESTION_FORM);
     router.push("/game");
   };
-  const nextScreen = () => setCurrentSetupScreen((prev) => prev + 1);
+  const nextScreen = () => {
+    if (currentSetupScreen === SetupScreen.VARIANT) {
+      startGame();
+    } else {
+      setCurrentSetupScreen((prev) => prev + 1);
+    }
+  };
   const prevScreen = () => setCurrentSetupScreen((prev) => prev - 1);
 
+  const CurrentScreenComponent =
+    currentSetupScreen === SetupScreen.LANDING
+      ? LandingScreen
+      : currentSetupScreen === SetupScreen.PLAYER_NAMES
+        ? PlayerNamesScreen
+        : VariantScreen;
   return (
-    <>
-      {currentSetupScreen === SetupScreen.LANDING && (
-        <LandingScreen
-          config={config}
-          updateConfig={updateConfig}
-          onNext={nextScreen}
-        />
-      )}
-      {currentSetupScreen === SetupScreen.PLAYER_NAMES && (
-        <PlayerNamesScreen
-          config={config}
-          updateConfig={updateConfig}
-          onPrev={prevScreen}
-          onNext={nextScreen}
-        />
-      )}
-      {currentSetupScreen === SetupScreen.VARIANT && (
-        <VariantScreen
-          config={config}
-          updateConfig={updateConfig}
-          onPrev={prevScreen}
-          onNext={startGame}
-        />
-      )}
-    </>
+    <CurrentScreenComponent
+      config={config}
+      updateConfig={updateConfig}
+      onNext={nextScreen}
+      onPrev={prevScreen}
+    />
   );
 }

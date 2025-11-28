@@ -1,40 +1,37 @@
 import { Progress } from "@/components/ui/progress";
 import { TypographyMuted, TypographySmall } from "@/components/ui/typography";
 import { ArrowRight } from "lucide-react";
-import { GameConfig, Player } from "@/types/game";
+import { GameConfig } from "@/types/game";
 
 export function PlayerOrderDisplay({
   players,
-  playerIdx,
-}: {
-  players: Player[];
-  playerIdx: number;
-}) {
+  currentPlayerIdx: currIdx,
+}: Pick<GameConfig, "players" | "currentPlayerIdx">) {
   return (
     <div className="flex items-center gap-2">
-      {playerIdx === players.length - 1 && players.length >= 3 && (
+      {currIdx === players.length - 1 && players.length >= 3 && (
         <>
-          <TypographyMuted>{players[playerIdx - 2].name}</TypographyMuted>
+          <TypographyMuted>{players[currIdx - 2].name}</TypographyMuted>
           <ArrowRight size={16} />
         </>
       )}
-      {playerIdx >= 1 && (
+      {currIdx >= 1 && (
         <>
-          <TypographyMuted>{players[playerIdx - 1].name}</TypographyMuted>
+          <TypographyMuted>{players[currIdx - 1].name}</TypographyMuted>
           <ArrowRight size={16} />
         </>
       )}
-      <TypographySmall>{players[playerIdx].name}</TypographySmall>
-      {playerIdx + 1 < players.length && (
+      <TypographySmall>{players[currIdx].name}</TypographySmall>
+      {currIdx + 1 < players.length && (
         <>
           <ArrowRight size={16} />
-          <TypographyMuted>{players[playerIdx + 1].name}</TypographyMuted>
+          <TypographyMuted>{players[currIdx + 1].name}</TypographyMuted>
         </>
       )}
-      {playerIdx === 0 && playerIdx + 2 < players.length && (
+      {currIdx === 0 && currIdx + 2 < players.length && (
         <>
           <ArrowRight size={16} />
-          <TypographyMuted>{players[playerIdx + 2].name}</TypographyMuted>
+          <TypographyMuted>{players[currIdx + 2].name}</TypographyMuted>
         </>
       )}
     </div>
@@ -49,11 +46,12 @@ export default function RevealProgress({
   return (
     <div>
       <div className="flex items-center justify-between">
-        {namesEnabled &&
-          PlayerOrderDisplay({
-            players: players,
-            playerIdx: currentPlayerIdx,
-          })}
+        {namesEnabled && (
+          <PlayerOrderDisplay
+            players={players}
+            currentPlayerIdx={currentPlayerIdx}
+          />
+        )}
         <TypographySmall>
           {currentPlayerIdx + 1} / {players.length}
         </TypographySmall>

@@ -3,12 +3,9 @@ import NumericInput from "@/components/ui/numeric-input";
 import { TypographySmall } from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
 import { GameConfig, Player } from "@/types/game";
-import { Lock, Repeat } from "lucide-react";
+import { Eye, Repeat } from "lucide-react";
 import { useState } from "react";
-
-function PlayerVotingCard({ player }: { player: Player }) {
-  return <TypographySmall>{player.name}</TypographySmall>;
-}
+import { toast } from "sonner";
 
 function PlayersVotingList({
   players,
@@ -27,18 +24,6 @@ function PlayersVotingList({
       [playerId]: Math.max(0, value),
     }));
   };
-  const handleDecrease = (playerId: number) => {
-    setVotes((prevVotes) => ({
-      ...prevVotes,
-      [playerId]: Math.max(0, prevVotes[playerId] - 1),
-    }));
-  };
-  const handleIncrease = (playerId: number) => {
-    setVotes((prevVotes) => ({
-      ...prevVotes,
-      [playerId]: prevVotes[playerId] + 1,
-    }));
-  };
   return (
     <div className="space-y-2">
       {players.map((player) => (
@@ -51,15 +36,17 @@ function PlayersVotingList({
               : "bg-card",
           )}
         >
-          <PlayerVotingCard player={player} />
+          <TypographySmall>{player.name}</TypographySmall>
           <NumericInput
             size="sm"
             value={votes[player.id]}
             onChange={(event) =>
               handleVoteChange(player.id, Number(event.target.value))
             }
-            onDecrease={() => handleDecrease(player.id)}
-            onIncrease={() => handleIncrease(player.id)}
+            onDecrease={() =>
+              handleVoteChange(player.id, Math.max(0, votes[player.id] - 1))
+            }
+            onIncrease={() => handleVoteChange(player.id, votes[player.id] + 1)}
             disabled={submitted}
           />
         </div>
@@ -95,6 +82,34 @@ export default function VotingActions({
     onNext();
   };
 
+  const handleVoteSubmit = () => {
+    setSubmitted(true);
+    // Count total votes
+    const totalVotes = Object.values(votes).reduce(
+      (sum, count) => sum + count,
+      0,
+    );
+    const impostorVotes = Object.entries(votes)
+      .filter(([playerId, votes]) => {
+        const player = players.find((p) => p.id === Number(playerId));
+        return player?.isImpostor;
+      })
+      .reduce((sum, [, count]) => sum + count, 0);
+
+    if (impostorVotes > totalVotes / 2) {
+      toast.success(
+        `Crewmates win! ${impostorVotes} out of ${totalVotes} votes were for the impostor.`,
+        { duration: 8000 },
+      );
+      return;
+    } else {
+      toast.error(
+        `Impostor wins! Only ${impostorVotes} out of ${totalVotes} votes were for the impostor.`,
+        { duration: 8000 },
+      );
+    }
+  };
+
   return (
     <div>
       <PlayersVotingList
@@ -105,11 +120,11 @@ export default function VotingActions({
       />
       <Button
         disabled={submitted}
-        onClick={() => setSubmitted(true)}
+        onClick={handleVoteSubmit}
         className="mt-6 w-full"
       >
-        <Lock />
-        submit vote
+        <Eye />
+        vote & reveal
       </Button>
       {submitted && (
         <Button onClick={handlePlayAgain} className="mt-2 w-full">

@@ -1,31 +1,27 @@
-import { Player } from "@/types/game";
+import { GameConfig, Player } from "@/types/game";
 import { Input } from "@/components/ui/input";
 
 export default function PlayerNamesInputs({
   players,
   setPlayerNames,
-}: {
-  players: Player[];
+}: Pick<GameConfig, "players"> & {
   setPlayerNames: (p: Player[]) => void;
 }) {
   return (
-    <div className="flex flex-col gap-2">
-      {players.map((player) => (
+    <div className="space-y-2">
+      {players.map((player, i) => (
         <Input
           key={player.id}
           type="text"
-          placeholder={`Player ${player.id + 1}`}
+          placeholder={`Player ${player.id}`}
           value={player.name}
           onChange={(e) => {
             const newPlayers = [...players];
-            const index = newPlayers.findIndex((p) => p.id === player.id);
-            if (index !== -1) {
-              newPlayers[index] = {
-                ...newPlayers[index],
-                name: e.target.value,
-              };
-              setPlayerNames(newPlayers);
-            }
+            newPlayers[i] = {
+              ...newPlayers[i],
+              name: e.target.value,
+            };
+            setPlayerNames(newPlayers);
           }}
         />
       ))}

@@ -21,11 +21,11 @@ export default function QuestionFormScreen({
       config.totalPlayers - 1,
       config.impostorCount,
     );
-    const updatedPlayers = config.players.map((player, idx) => ({
+    const playersWithImpostor = config.players.map((player, idx) => ({
       ...player,
       isImpostor: randomIdxs.includes(idx),
     }));
-    updateConfig({ players: updatedPlayers });
+    updateConfig({ players: playersWithImpostor });
   };
   const handleNext = () => {
     pickImpostorRandomly();

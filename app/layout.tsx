@@ -6,13 +6,16 @@ import { Toaster } from "@/components/ui/sonner";
 
 const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  weight: ["400", "500", "600", "800"],
   variable: "--font-poppins",
 });
 
 export const metadata: Metadata = {
   title: "Impostor Game",
   description: "Play the impostor game with friends locally!",
+  appleWebApp: {
+    title: "Impostor",
+  },
 };
 
 export default function RootLayout({
@@ -22,9 +25,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <meta name="apple-mobile-web-app-title" content="Impostor" />
-      </head>
       <body className={poppins.className}>
         <Header />
         {children}

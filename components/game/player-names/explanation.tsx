@@ -16,8 +16,8 @@ export default function PlayerNamesExplanation({
         </Button>
       </TypographyH2>
       <TypographyP>
-        Fill names of the players in the order as you’re sitting in a circle for
-        increased clarity. The phone will be passed around.{" "}
+        Fill names of the players in the order as you&apos;re sitting in a
+        circle for better clarity. The phone will be passed around.{" "}
       </TypographyP>
     </>
   );

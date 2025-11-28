@@ -22,31 +22,26 @@ export default function Game() {
     setConfig((prev) => ({ ...prev, ...updates }));
   };
 
-  const nextScreen = () => setCurrentGameScreen((prev) => prev + 1);
+  const nextScreen = () =>
+    setCurrentGameScreen((prev) => {
+      if (prev === GameScreen.VOTING) {
+        return GameScreen.QUESTION_FORM;
+      }
+      return prev + 1;
+    });
+
+  const CurrentScreenComponent =
+    currentGameScreen === GameScreen.QUESTION_FORM
+      ? QuestionFormScreen
+      : currentGameScreen === GameScreen.QUESTION_REVEAL
+        ? QuestionRevealScreen
+        : VotingScreen;
 
   return (
-    <>
-      {currentGameScreen === GameScreen.QUESTION_FORM && (
-        <QuestionFormScreen
-          config={config}
-          updateConfig={updateConfig}
-          onNext={nextScreen}
-        />
-      )}
-      {currentGameScreen === GameScreen.QUESTION_REVEAL && (
-        <QuestionRevealScreen
-          config={config}
-          updateConfig={updateConfig}
-          onNext={nextScreen}
-        />
-      )}
-      {currentGameScreen === GameScreen.VOTING && (
-        <VotingScreen
-          config={config}
-          updateConfig={updateConfig}
-          onNext={() => setCurrentGameScreen(GameScreen.QUESTION_FORM)}
-        />
-      )}
-    </>
+    <CurrentScreenComponent
+      config={config}
+      updateConfig={updateConfig}
+      onNext={nextScreen}
+    />
   );
 }

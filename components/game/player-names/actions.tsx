@@ -1,15 +1,15 @@
 "use client";
-import { Player } from "@/types/game";
+import { GameConfig } from "@/types/game";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { ArrowRight } from "lucide-react";
 
 export default function PlayerNamesActions({
   setNamesEnabled,
   players,
   onNext,
-}: {
+}: Pick<GameConfig, "players"> & {
   setNamesEnabled: (enabled: boolean) => void;
-  players: Player[];
   onNext: () => void;
 }) {
   function handleSkipNames() {
@@ -34,7 +34,10 @@ export default function PlayerNamesActions({
       <Button onClick={handleSkipNames} variant="outline">
         skip names
       </Button>
-      <Button onClick={handleContinueWithNames}>continue</Button>
+      <Button onClick={handleContinueWithNames}>
+        <ArrowRight />
+        continue
+      </Button>
     </div>
   );
 }

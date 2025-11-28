@@ -10,7 +10,13 @@ import BasicStickman from "@/components/illustrations/basic-stickman.svg";
 import { cn } from "@/lib/utils";
 import { GameConfig } from "@/types/game";
 
-function PlayerCountIllustration(count: number, isImpostor: boolean) {
+function PlayerCountIllustration({
+  count,
+  isImpostor,
+}: {
+  count: number;
+  isImpostor: boolean;
+}) {
   const total = Array.from({ length: count }, (_, i) => i);
   return (
     <div className={cn("flex origin-left gap-1", count > 8 && "scale-90")}>
@@ -51,14 +57,25 @@ export default function GameSetup({
       updateImpostorsCount(count - 1);
     }
 
-    updateConfig({
-      totalPlayers: count,
-      players: Array.from({ length: count }, (_, i) => ({
-        id: i,
-        name: "",
-        isImpostor: false,
-      })),
-    });
+    if (count > config.players.length) {
+      const newPlayers = [
+        ...config.players,
+        ...Array.from({ length: count - config.players.length }, (_, i) => ({
+          id: config.players.length + i + 1,
+          name: "",
+          isImpostor: false,
+        })),
+      ];
+      updateConfig({
+        totalPlayers: count,
+        players: newPlayers,
+      });
+    } else {
+      updateConfig({
+        totalPlayers: count,
+        players: config.players.slice(0, count),
+      });
+    }
   };
 
   const validateImpostorsCount = (count: number): boolean => {
@@ -68,7 +85,7 @@ export default function GameSetup({
   const updateImpostorsCount = (count: number) => {
     if (!validateImpostorsCount(count)) {
       toast.warning(
-        "At least one impostor is required, at most all players except one.",
+        `At least ${MIN_IMPOSTORS} impostor is required, at most all players except one.`,
       );
       return;
     }
@@ -83,10 +100,8 @@ export default function GameSetup({
 
   const PlayerSelection = (
     <div>
-      <TypographySmall className="mb-2 block">
-        total number of players
-      </TypographySmall>
-      <div className="flex items-center gap-4">
+      <TypographySmall>total number of players</TypographySmall>
+      <div className="mt-2 flex items-center gap-4">
         <NumericInput
           size="lg"
           value={config.totalPlayers}
@@ -101,17 +116,18 @@ export default function GameSetup({
             updatePlayersCount(val);
           }}
         />
-        {PlayerCountIllustration(config.totalPlayers, false)}
+        <PlayerCountIllustration
+          count={config.totalPlayers}
+          isImpostor={false}
+        />
       </div>
     </div>
   );
 
   const ImpostorSelection = (
     <div>
-      <TypographySmall className="mb-2 block">
-        number of impostors
-      </TypographySmall>
-      <div className="flex items-center gap-4">
+      <TypographySmall>number of impostors</TypographySmall>
+      <div className="mt-2 mb-1 flex items-center gap-4">
         <NumericInput
           size="lg"
           value={config.impostorCount}
@@ -126,9 +142,12 @@ export default function GameSetup({
             updateImpostorsCount(val);
           }}
         />
-        {PlayerCountIllustration(config.impostorCount, true)}
+        <PlayerCountIllustration
+          count={config.impostorCount}
+          isImpostor={true}
+        />
       </div>
-      <TypographyMuted className="mt-2">
+      <TypographyMuted>
         recommended {calcRecommendedImpostors(config.totalPlayers)} impostor
         {calcRecommendedImpostors(config.totalPlayers) > 1 && "s"} for{" "}
         {config.totalPlayers} players
@@ -137,7 +156,7 @@ export default function GameSetup({
   );
 
   return (
-    <section className="flex flex-col gap-6">
+    <section className="space-y-6">
       {PlayerSelection}
       {ImpostorSelection}
       <Button onClick={onNext} size="lg">

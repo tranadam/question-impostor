@@ -17,12 +17,10 @@ export default function PlayerNamesScreen({
   onNext: () => void;
   onPrev: () => void;
 }) {
-  const setPlayerNames = (players: Player[]) => {
-    updateConfig({ players });
-  };
-  const setNamesEnabled = (enabled: boolean) => {
-    updateConfig({ namesEnabled: enabled });
-  };
+  const setPlayerNames = (players: Player[]) => updateConfig({ players });
+  const setNamesEnabled = (namesEnabled: boolean) =>
+    updateConfig({ namesEnabled });
+
   return (
     <main className="mx-auto mb-16 max-w-2xl px-4">
       <PlayerNamesExplanation onPrev={onPrev} />

@@ -1,5 +1,3 @@
-"use client";
-
 import { IconCard } from "@/components/ui/icon-card";
 import PenAndPaper from "@/components/illustrations/pen-and-paper.svg";
 import Phone from "@/components/illustrations/phone.svg";
@@ -16,9 +14,9 @@ export function GameVariantActions({
   updateConfig: (config: Partial<GameConfig>) => void;
   onNext: () => void;
 }) {
-  const handleStartGame = () => {
+  const handleChooseMode = () => {
     if (config.gameType === null) return;
-
+    updateConfig({ mainQuestion: "", impostorQuestion: "" });
     onNext();
   };
 
@@ -42,7 +40,7 @@ export function GameVariantActions({
         />
       </div>
       <Button
-        onClick={handleStartGame}
+        onClick={handleChooseMode}
         disabled={config.gameType === null}
         className="w-full"
       >
