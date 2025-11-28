@@ -1,6 +1,7 @@
 {
   "name": "Impostor Game",
   "short_name": "Impostor",
+  "description": "Play the impostor game with friends locally!",
   "icons": [
     {
       "src": "/favicon/web-app-manifest-192x192.png",
