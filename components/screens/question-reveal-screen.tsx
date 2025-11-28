@@ -1,5 +1,5 @@
-import QuestionRevealAction from "@/components/question-reveal-action";
-import RevealProgress from "@/components/reveal-progress";
+import QuestionRevealAction from "@/components/game/question-reveal/actions";
+import RevealProgress from "@/components/game/question-reveal/reveal-progress";
 import { GameConfig } from "@/types/game";
 
 export default function QuestionRevealScreen({

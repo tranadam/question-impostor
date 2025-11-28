@@ -1,5 +1,5 @@
-import VotingActions from "@/components/voting-actions";
-import VotingExplanation from "@/components/voting-explanation";
+import VotingActions from "@/components/game/voting/actions";
+import VotingExplanation from "@/components/game/voting/explanation";
 import { GameConfig } from "@/types/game";
 
 export default function VotingScreen({

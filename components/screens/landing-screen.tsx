@@ -1,6 +1,6 @@
 import { GameConfig } from "@/types/game";
-import GameSetup from "@/components/game-setup";
-import Rules from "@/components/rules";
+import GameSetup from "@/components/game/setup/game-setup";
+import Rules from "@/components/game/setup/rules";
 
 export default function LandingScreen({
   config,

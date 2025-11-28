@@ -1,6 +1,6 @@
 "use client";
 
-import { INITIAL_GAME_CONFIG } from "@/lib/game-config";
+import { INITIAL_GAME_CONFIG } from "@/lib/game/config";
 import { useGameStorage } from "@/lib/hooks/use-game-storage";
 import { GameConfig, GameScreen, StorageKeys } from "@/types/game";
 import QuestionFormScreen from "@/components/screens/question-form-screen";

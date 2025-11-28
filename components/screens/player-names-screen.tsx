@@ -1,9 +1,9 @@
 "use client";
 
 import { GameConfig, Player } from "@/types/game";
-import PlayerNamesActions from "@/components/player-names-actions";
-import PlayerNamesInputs from "@/components/player-names-inputs";
-import PlayerNamesExplanation from "@/components/players-names-explanation";
+import PlayerNamesActions from "@/components/game/player-names/actions";
+import PlayerNamesInputs from "@/components/game/player-names/form";
+import PlayerNamesExplanation from "@/components/game/player-names/explanation";
 import Image from "next/image";
 
 export default function PlayerNamesScreen({

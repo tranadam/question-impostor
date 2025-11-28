@@ -1,6 +1,6 @@
 import { GameConfig } from "@/types/game";
-import { GameVariantActions } from "@/components/game-variant-actions";
-import GameVariantExplanation from "@/components/game-variation-explanation";
+import { GameVariantActions } from "@/components/game/variant-selection/actions";
+import GameVariantExplanation from "@/components/game/variant-selection/explanation";
 
 export default function VariantScreen({
   config,

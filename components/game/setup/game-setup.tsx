@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import NumericInput from "@/components/ui/numeric-input";
 import { TypographyMuted, TypographySmall } from "@/components/ui/typography";
-import { MAX_PLAYERS, MIN_IMPOSTORS, MIN_PLAYERS } from "@/lib/game-config";
+import { MAX_PLAYERS, MIN_IMPOSTORS, MIN_PLAYERS } from "@/lib/game/config";
 import { Rocket } from "lucide-react";
 import { toast } from "sonner";
 import BasicStickman from "@/components/illustrations/basic-stickman.svg";

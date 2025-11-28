@@ -1,5 +1,5 @@
 import { GameConfig } from "@/types/game";
-import QuestionForm from "@/components/question-form";
+import QuestionForm from "@/components/game/question-form/actions-form";
 import { generateRandomIntFromRange } from "@/lib/random";
 import { Button } from "@/components/ui/button";
 import { Dices, Sparkles } from "lucide-react";

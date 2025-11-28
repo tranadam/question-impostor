@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { GameConfig, GameScreen, SetupScreen, StorageKeys } from "@/types/game";
-import { INITIAL_GAME_CONFIG } from "@/lib/game-config";
+import { INITIAL_GAME_CONFIG } from "@/lib/game/config";
 import LandingScreen from "@/components/screens/landing-screen";
 import PlayerNamesScreen from "@/components/screens/player-names-screen";
 import VariantScreen from "@/components/screens/variant-screen";
