@@ -15,11 +15,11 @@ export default function QuestionRevealScreen({
     <main className="mx-auto mb-16 max-w-2xl px-4">
       <RevealProgress
         namesEnabled={config.namesEnabled}
-        players={config.players}
+        players={config.gamePlayers}
         currentPlayerIdx={config.currentPlayerIdx}
       />
       <QuestionRevealAction
-        players={config.players}
+        players={config.gamePlayers}
         impostorQuestion={config.impostorQuestion}
         mainQuestion={config.mainQuestion}
         currentPlayerIdx={config.currentPlayerIdx}

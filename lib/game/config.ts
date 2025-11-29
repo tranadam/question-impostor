@@ -14,9 +14,15 @@ export const INITIAL_GAME_CONFIG: GameConfig = {
     name: "",
     isImpostor: false,
   })),
+  gamePlayers: Array.from({ length: MIN_PLAYERS }, (_, index) => ({
+    id: index + 1,
+    name: "",
+    isImpostor: false,
+  })),
   currentPlayerIdx: 0,
   gameType: "paper",
   namesEnabled: true,
   mainQuestion: "",
   impostorQuestion: "",
+  whoAskedId: -1,
 };

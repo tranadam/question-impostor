@@ -12,6 +12,9 @@ export enum GameScreen {
 export interface Player {
   id: number;
   name: string;
+}
+
+export interface GamePlayer extends Player {
   isImpostor: boolean;
 }
 
@@ -19,11 +22,13 @@ export interface GameConfig {
   totalPlayers: number;
   impostorCount: number;
   players: Player[];
+  gamePlayers: GamePlayer[];
   currentPlayerIdx: number;
   gameType: "paper" | "mobile";
   namesEnabled: boolean;
   mainQuestion: string;
   impostorQuestion: string;
+  whoAskedIdx: number;
 }
 
 export enum StorageKeys {

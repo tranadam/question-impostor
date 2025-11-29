@@ -17,7 +17,7 @@ export default function VotingScreen({
       <div className="mt-8">
         <VotingActions
           namesEnabled={config.namesEnabled}
-          players={config.players}
+          players={config.gamePlayers}
           updateConfig={updateConfig}
           onNext={onNext}
         />

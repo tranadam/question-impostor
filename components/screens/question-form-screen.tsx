@@ -1,4 +1,4 @@
-import { GameConfig } from "@/types/game";
+import { GameConfig, GamePlayer, Player } from "@/types/game";
 import QuestionForm from "@/components/game/question-form/actions-form";
 import { generateRandomIntFromRange } from "@/lib/random";
 import { Button } from "@/components/ui/button";
@@ -15,21 +15,44 @@ export default function QuestionFormScreen({
   updateConfig: (config: Partial<GameConfig>) => void;
   onNext: () => void;
 }) {
-  const pickImpostorRandomly = () => {
+  const getUpdatedGamePlayers = (players: Player[], whoAskedIdx: number) => {
+    const afterPlayers = players.slice(whoAskedIdx + 1, players.length);
+    const beforePlayers = players.slice(0, whoAskedIdx);
+    const updatedGamePlayers = [...afterPlayers, ...beforePlayers].map(
+      (player) => ({
+        ...player,
+        isImpostor: false,
+      }),
+    );
+    return updatedGamePlayers;
+  };
+
+  const getPlayersWithImpostors = (
+    players: GamePlayer[],
+    impostorCount: number,
+  ) => {
     const randomIdxs = generateRandomIntFromRange(
       0,
-      config.totalPlayers - 1,
-      config.impostorCount,
+      players.length - 1,
+      impostorCount,
     );
-    const playersWithImpostor = config.players.map((player, idx) => ({
+
+    return players.map((player, idx) => ({
       ...player,
       isImpostor: randomIdxs.includes(idx),
     }));
-    updateConfig({ players: playersWithImpostor });
   };
+
   const handleNext = () => {
-    pickImpostorRandomly();
-    updateConfig({ currentPlayerIdx: 0 });
+    const gamePlayersWithoutWhoAsked = getUpdatedGamePlayers(
+      config.players,
+      config.whoAskedIdx,
+    );
+    const playersWithImpostors = getPlayersWithImpostors(
+      gamePlayersWithoutWhoAsked,
+      config.impostorCount,
+    );
+    updateConfig({ currentPlayerIdx: 0, gamePlayers: playersWithImpostors });
     onNext();
   };
   const handleAIInspiration = () => {
@@ -45,11 +68,14 @@ export default function QuestionFormScreen({
         setImpostorQuestion={(q: string) =>
           updateConfig({ impostorQuestion: q })
         }
+        setWhoAskedIdx={(i: number) => updateConfig({ whoAskedIdx: i })}
       />
       <div className="mt-8 flex flex-col gap-2">
         <Button
           disabled={
-            config.mainQuestion === "" || config.impostorQuestion === ""
+            config.mainQuestion === "" ||
+            config.impostorQuestion === "" ||
+            config.whoAskedIdx === -1
           }
           onClick={handleNext}
         >

@@ -5,15 +5,24 @@ import {
   TypographyMuted,
   TypographySmall,
 } from "@/components/ui/typography";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function QuestionForm({
   config,
   setMainQuestion,
   setImpostorQuestion,
+  setWhoAskedIdx,
 }: {
   config: GameConfig;
   setMainQuestion: (mainQuestion: string) => void;
   setImpostorQuestion: (impostorQuestion: string) => void;
+  setWhoAskedIdx: (whoAskedId: number) => void;
 }) {
   return (
     <section>
@@ -44,6 +53,24 @@ export default function QuestionForm({
             {config.impostorCount} impostor
             {config.impostorCount > 1 ? "s" : ""} see
             {config.impostorCount > 1 ? "" : "s"} this question
+          </TypographyMuted>
+        </div>
+        <div>
+          <TypographySmall>who asked</TypographySmall>
+          <Select onValueChange={(i) => setWhoAskedIdx(parseInt(i))}>
+            <SelectTrigger className="mt-2 mb-1 w-full">
+              <SelectValue placeholder="Player 1" />
+            </SelectTrigger>
+            <SelectContent>
+              {config.players.map((player, idx) => (
+                <SelectItem key={player.id} value={idx.toString()}>
+                  {player.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <TypographyMuted>
+            the player that asked can&apos;t play this round
           </TypographyMuted>
         </div>
       </div>
