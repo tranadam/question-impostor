@@ -51,6 +51,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Copy docker-compose to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_PRIVATE_KEY }}
+          source: "docker-compose.yml"
+          target: "/var/www/impostor.adamtran.cz"
+
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -60,19 +72,12 @@ jobs:
           script: |
             set -e
 
+            cd /var/www/impostor.adamtran.cz
+
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            echo "OPENAI_KEY=${{ secrets.OPENAI_KEY }}" > .env
 
-            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-
-            docker stop impostor-app || true
-            docker rm impostor-app || true
-
-            docker run -d \
-              --name impostor-app \
-              --restart unless-stopped \
-              -p 8302:3000 \
-              -e NODE_ENV=production \
-              -e OPENAI_KEY="${{ secrets.OPENAI_KEY }}" \
-              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            docker compose pull
+            docker compose up -d
 
             docker image prune -f
