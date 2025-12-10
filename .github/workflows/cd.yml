@@ -1,0 +1,27 @@
+name: Deploy to VPS
+
+on:
+  workflow_run:
+    workflows: ["Code Quality Check"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_PRIVATE_KEY }}
+          script: |
+            cd /path/to/your/project
+            git pull origin main
+            echo "OPENAI_KEY=${{ secrets.OPENAI_KEY }}" > .env
+            docker compose up -d --build
+            docker image prune -f
