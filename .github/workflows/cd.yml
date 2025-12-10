@@ -20,7 +20,8 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_PRIVATE_KEY }}
           script: |
-            cd /path/to/your/project
+            set -e
+            cd /var/www/impostor.adamtran.cz
             git pull origin main
             echo "OPENAI_KEY=${{ secrets.OPENAI_KEY }}" > .env
             docker compose up -d --build
