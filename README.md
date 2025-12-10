@@ -1,6 +1,7 @@
 # Question Impostor
 
 [![CI Pipeline](https://github.com/tranadam/question-impostor/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/tranadam/question-impostor/actions/workflows/ci.yml)
+[![Deploy to VPS](https://github.com/tranadam/question-impostor/actions/workflows/cd.yml/badge.svg?branch=main)](https://github.com/tranadam/question-impostor/actions/workflows/cd.yml)
 
 ## About the game
 
