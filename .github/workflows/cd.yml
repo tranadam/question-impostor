@@ -1,18 +1,56 @@
-name: Deploy to VPS
+name: Build and Deploy
 
 on:
-  workflow_run:
-    workflows: ["Code Quality Check"]
-    types:
-      - completed
+  push:
+    branches:
+      - main
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  deploy:
+  build-and-push:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha
+            type=raw,value=latest
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            OPENAI_KEY=${{ secrets.OPENAI_KEY }}
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -21,8 +59,20 @@ jobs:
           key: ${{ secrets.VPS_PRIVATE_KEY }}
           script: |
             set -e
-            cd /var/www/impostor.adamtran.cz
-            git pull origin main
-            echo "OPENAI_KEY=${{ secrets.OPENAI_KEY }}" > .env
-            docker compose up -d --build
+
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+
+            docker stop impostor-app || true
+            docker rm impostor-app || true
+
+            docker run -d \
+              --name impostor-app \
+              --restart unless-stopped \
+              -p 8302:3000 \
+              -e NODE_ENV=production \
+              -e OPENAI_KEY="${{ secrets.OPENAI_KEY }}" \
+              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+
             docker image prune -f
