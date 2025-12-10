@@ -6,18 +6,17 @@ const client = new OpenAI({
 });
 
 export async function POST(req: Request) {
-  const { categories, preferences, count } = await req.json();
+  const { categories, context, count } = await req.json();
   if (
     !categories ||
     !Array.isArray(categories) ||
-    categories.length === 0 ||
-    typeof preferences !== "string" ||
+    typeof context !== "string" ||
     typeof count !== "number"
   ) {
     return NextResponse.json(
       {
         error:
-          "categories must be a nonempty array, preferences a string and count a number",
+          "categories must be an array, context a string and count a number",
       },
       { status: 400 },
     );
@@ -29,36 +28,62 @@ export async function POST(req: Request) {
     );
   }
   const prompt = `
-You create fun questions for a party game. The game goes like this:
+You create questions for a chaotic party game played by Gen Z friends (18-25).
+Your goal is to spark awkward pauses, loud debates, call-outs, and laughter.
 
-Everyone discretely draws a question and writes down their answer.
-The catch is, some of the players unknowingly receive an impostor question.
-Once everyone locks their answer, original question is revealed along with all answers.
-Players discuss who they think the impostor is, then vote.
-If the majority correctly identifies the impostor, they win. If not, the impostor wins!
+Adopt this persona internally:
+You are a slightly unhinged, socially aware friend who enjoys mild chaos,
+exposing hypocrisy.
 
-The question should be engaging, witty, embarrassing, or thought-provoking to spark lively discussions.
-It is usually played among friends of age 18-25 (Gen Z) at social gatherings.
+Game rules (context):
+Everyone secretly answers a question.
+Some players receive a different (impostor) question without knowing.
+After answers are revealed, players debate who the impostor is.
 
-The answers to the question should be subjective and open-ended, allowing for a variety of responses.
-It could be a number, word, or a short sentence. Do NOT be normie, generic or boring.
+Question quality rules (VERY IMPORTANT):
+- DON'T make it sound AI-generated and overly complicated or too long or too specific.
+- Questions must feel risky but safe (embarrassing, revealing, or spicy—not offensive).
+- Avoid normie, generic, or “card game” phrasing.
+- No “What’s your favorite…”, “Would you rather…”, “If you could…”.
+- No therapy talk, motivational tone, or moral lessons.
+- Use casual, spoken language — like something asked at 2am at a party.
+- The question should make at least one person hesitate before answering.
+- Answers must be subjective and open-ended (number, word, or short sentence).
 
-Generate ${count} unique question ideas with the main question and impostor question based on the categories below.
-Both questions should have a similar theme and answer style. For example, both could require a one-word answer, or both could require a number.
-If an answer is someone's name at the table, then the impostor question should also lead to a name as an answer.
-However, the questions should never be identical in meaning.
+Main vs Impostor rules:
+- Both questions must have a similar theme and answer format.
+- They must NOT mean the same thing.
+- If one leads to a name, the other must also lead to a name.
+- The impostor question should subtly shift context, not be obviously different.
 
-Extract categories from this user input: "${categories.join(", ")}"
-Take inspiration by these additional preferences from user: "${preferences}"
+Bad example (DO NOT DO THIS):
+Name the teammate on the squad who would drop the perfect hype line before kickoff. / Name the teammate on the squad who would drop the perfect hype line during halftime.
+^^^ Above pair is too similar, boring, cringe and obvious
+
+Good example but don't copy or get too focused on these:
+Say a thing you would say during a massage / Say a thing you would say during sex
+Who would 100% spill tea about the group if they got drunk enough? / Name a random person from our friend group
+Who ghosts the most? / Name a close friend
+What age is the youngest you would date? / Say a random number between 10 and 50
+Which country would you want to live in the least? / What was the country you last visited?
+
+User Input:
+Categories: "${categories.join(", ")}"
+User context: "${context}"
+
+Task:
+Generate ${count} unique question pairs.
 
 Return JSON ONLY in this format:
-[ {"mainQuestion": "string", "impostorQuestion": "string" }, ... ]
-Do NOT include any explanations or additional text.
+[
+  { "mainQuestion": "string", "impostorQuestion": "string" }
+]
 
+No explanations. No extra text.
   `;
 
   const response = await client.responses.create({
-    model: "gpt-5-nano",
+    model: "gpt-4.1-nano",
     input: prompt,
   });
 
