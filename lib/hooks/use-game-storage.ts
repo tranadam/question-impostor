@@ -11,6 +11,7 @@ export function useGameStorage<T>(key: StorageKeys, initialValue: T) {
     try {
       const item = window.sessionStorage.getItem(key);
       if (item !== null) {
+        // eslint-disable-next-line
         setValue(JSON.parse(item));
       }
     } catch (e) {
