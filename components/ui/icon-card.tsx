@@ -1,6 +1,6 @@
-import { TypographyH4, TypographyP } from "@/components/ui/typography";
-import { cn } from "@/lib/utils";
-import { toast } from "sonner";
+import { TypographyH4, TypographyP } from '@/components/ui/typography';
+import { cn } from '@/lib/utils';
+import { toast } from 'sonner';
 
 export function IconCard({
   heading,
@@ -16,10 +16,10 @@ export function IconCard({
   description: string;
   icon: React.ElementType;
   active?: boolean;
-} & React.ComponentProps<"button">) {
+} & React.ComponentProps<'button'>) {
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (disabled) {
-      toast.warning("This option is currently unavailable.");
+      toast.warning('This option is currently unavailable.');
       return;
     }
     onClick?.(e);
@@ -27,10 +27,10 @@ export function IconCard({
   return (
     <button
       className={cn(
-        "bg-card text-card-foreground w-full rounded-lg border px-2 py-4 text-center shadow-sm",
-        active && "ring-primary/50 ring-2",
-        disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer",
-        className,
+        'bg-card text-card-foreground w-full rounded-lg border px-2 py-4 text-center shadow-sm',
+        active && 'ring-primary/50 ring-2',
+        disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
+        className
       )}
       onClick={handleClick}
       {...props}

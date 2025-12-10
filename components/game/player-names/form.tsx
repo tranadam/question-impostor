@@ -1,10 +1,10 @@
-import { GameConfig, Player } from "@/types/game";
-import { Input } from "@/components/ui/input";
+import { GameConfig, Player } from '@/types/game';
+import { Input } from '@/components/ui/input';
 
 export default function PlayerNamesInputs({
   players,
   setPlayerNames,
-}: Pick<GameConfig, "players"> & {
+}: Pick<GameConfig, 'players'> & {
   setPlayerNames: (p: Player[]) => void;
 }) {
   return (

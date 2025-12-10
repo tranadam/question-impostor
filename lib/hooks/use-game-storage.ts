@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { StorageKeys } from "@/types/game";
-import { useEffect, useState } from "react";
+import { StorageKeys } from '@/types/game';
+import { useEffect, useState } from 'react';
 
 export function useGameStorage<T>(key: StorageKeys, initialValue: T) {
   const [value, setValue] = useState<T>(initialValue);
@@ -14,7 +14,7 @@ export function useGameStorage<T>(key: StorageKeys, initialValue: T) {
         setValue(JSON.parse(item));
       }
     } catch (e) {
-      console.error("sessionStorage read failed", e);
+      console.error('sessionStorage read failed', e);
     }
     setHydrated(true);
   }, [key]);
@@ -24,7 +24,7 @@ export function useGameStorage<T>(key: StorageKeys, initialValue: T) {
     try {
       window.sessionStorage.setItem(key, JSON.stringify(value));
     } catch (e) {
-      console.error("sessionStorage write failed", e);
+      console.error('sessionStorage write failed', e);
     }
   }, [key, value, hydrated]);
 

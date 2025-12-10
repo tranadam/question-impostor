@@ -1,17 +1,13 @@
-import { GameConfig } from "@/types/game";
-import { Input } from "@/components/ui/input";
-import {
-  TypographyH2,
-  TypographyMuted,
-  TypographySmall,
-} from "@/components/ui/typography";
+import { GameConfig } from '@/types/game';
+import { Input } from '@/components/ui/input';
+import { TypographyH2, TypographyMuted, TypographySmall } from '@/components/ui/typography';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 
 export default function QuestionForm({
   config,
@@ -37,8 +33,7 @@ export default function QuestionForm({
             className="mt-2 mb-1"
           />
           <TypographyMuted>
-            {config.totalPlayers - config.impostorCount} players see this
-            question
+            {config.totalPlayers - config.impostorCount} players see this question
           </TypographyMuted>
         </div>
         <div>
@@ -51,8 +46,8 @@ export default function QuestionForm({
           />
           <TypographyMuted>
             {config.impostorCount} impostor
-            {config.impostorCount > 1 ? "s" : ""} see
-            {config.impostorCount > 1 ? "" : "s"} this question
+            {config.impostorCount > 1 ? 's' : ''} see
+            {config.impostorCount > 1 ? '' : 's'} this question
           </TypographyMuted>
         </div>
         <div>
@@ -69,9 +64,7 @@ export default function QuestionForm({
               ))}
             </SelectContent>
           </Select>
-          <TypographyMuted>
-            the player that asked can&apos;t play this round
-          </TypographyMuted>
+          <TypographyMuted>the player that asked can&apos;t play this round</TypographyMuted>
         </div>
       </div>
     </section>

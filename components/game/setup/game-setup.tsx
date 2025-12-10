@@ -1,28 +1,22 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import NumericInput from "@/components/ui/numeric-input";
-import { TypographyMuted, TypographySmall } from "@/components/ui/typography";
-import { MAX_PLAYERS, MIN_IMPOSTORS, MIN_PLAYERS } from "@/lib/game/config";
-import { Rocket } from "lucide-react";
-import { toast } from "sonner";
-import BasicStickman from "@/components/illustrations/basic-stickman.svg";
-import { cn } from "@/lib/utils";
-import { GameConfig } from "@/types/game";
+import { Button } from '@/components/ui/button';
+import NumericInput from '@/components/ui/numeric-input';
+import { TypographyMuted, TypographySmall } from '@/components/ui/typography';
+import { MAX_PLAYERS, MIN_IMPOSTORS, MIN_PLAYERS } from '@/lib/game/config';
+import { Rocket } from 'lucide-react';
+import { toast } from 'sonner';
+import BasicStickman from '@/components/illustrations/basic-stickman.svg';
+import { cn } from '@/lib/utils';
+import { GameConfig } from '@/types/game';
 
-function PlayerCountIllustration({
-  count,
-  isImpostor,
-}: {
-  count: number;
-  isImpostor: boolean;
-}) {
+function PlayerCountIllustration({ count, isImpostor }: { count: number; isImpostor: boolean }) {
   const total = Array.from({ length: count }, (_, i) => i);
   return (
-    <div className={cn("flex origin-left gap-1", count > 8 && "scale-90")}>
+    <div className={cn('flex origin-left gap-1', count > 8 && 'scale-90')}>
       {total.map((_, i) => (
         <BasicStickman
-          className={cn(isImpostor ? "text-primary" : "text-black")}
+          className={cn(isImpostor ? 'text-primary' : 'text-black')}
           alt=""
           width={10}
           height={21}
@@ -48,9 +42,7 @@ export default function GameSetup({
 
   const updatePlayersCount = (count: number) => {
     if (!validatePlayersCount(count)) {
-      toast.warning(
-        `Number of players must be between ${MIN_PLAYERS} and ${MAX_PLAYERS}`,
-      );
+      toast.warning(`Number of players must be between ${MIN_PLAYERS} and ${MAX_PLAYERS}`);
       return;
     }
     if (count <= config.impostorCount) {
@@ -62,7 +54,7 @@ export default function GameSetup({
         ...config.players,
         ...Array.from({ length: count - config.players.length }, (_, i) => ({
           id: config.players.length + i + 1,
-          name: "",
+          name: '',
           isImpostor: false,
         })),
       ];
@@ -85,7 +77,7 @@ export default function GameSetup({
   const updateImpostorsCount = (count: number) => {
     if (!validateImpostorsCount(count)) {
       toast.warning(
-        `At least ${MIN_IMPOSTORS} impostor is required, at most all players except one.`,
+        `At least ${MIN_IMPOSTORS} impostor is required, at most all players except one.`
       );
       return;
     }
@@ -116,10 +108,7 @@ export default function GameSetup({
             updatePlayersCount(val);
           }}
         />
-        <PlayerCountIllustration
-          count={config.totalPlayers}
-          isImpostor={false}
-        />
+        <PlayerCountIllustration count={config.totalPlayers} isImpostor={false} />
       </div>
     </div>
   );
@@ -142,15 +131,11 @@ export default function GameSetup({
             updateImpostorsCount(val);
           }}
         />
-        <PlayerCountIllustration
-          count={config.impostorCount}
-          isImpostor={true}
-        />
+        <PlayerCountIllustration count={config.impostorCount} isImpostor={true} />
       </div>
       <TypographyMuted>
         recommended {calcRecommendedImpostors(config.totalPlayers)} impostor
-        {calcRecommendedImpostors(config.totalPlayers) > 1 && "s"} for{" "}
-        {config.totalPlayers} players
+        {calcRecommendedImpostors(config.totalPlayers) > 1 && 's'} for {config.totalPlayers} players
       </TypographyMuted>
     </div>
   );

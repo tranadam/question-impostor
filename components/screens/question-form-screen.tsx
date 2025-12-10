@@ -1,6 +1,6 @@
-import { GameConfig } from "@/types/game";
-import QuestionForm from "@/components/game/question-form/form";
-import QuestionFormActions from "@/components/game/question-form/actions";
+import { GameConfig } from '@/types/game';
+import QuestionForm from '@/components/game/question-form/form';
+import QuestionFormActions from '@/components/game/question-form/actions';
 
 export default function QuestionFormScreen({
   config,
@@ -16,17 +16,11 @@ export default function QuestionFormScreen({
       <QuestionForm
         config={config}
         setMainQuestion={(q: string) => updateConfig({ mainQuestion: q })}
-        setImpostorQuestion={(q: string) =>
-          updateConfig({ impostorQuestion: q })
-        }
+        setImpostorQuestion={(q: string) => updateConfig({ impostorQuestion: q })}
         setWhoAskedIdx={(i: number) => updateConfig({ whoAskedIdx: i })}
       />
       <div className="mt-8">
-        <QuestionFormActions
-          config={config}
-          updateConfig={updateConfig}
-          onNext={onNext}
-        />
+        <QuestionFormActions config={config} updateConfig={updateConfig} onNext={onNext} />
       </div>
     </main>
   );

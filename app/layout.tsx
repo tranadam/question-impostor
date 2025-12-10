@@ -1,20 +1,20 @@
-import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
-import "./globals.css";
-import Header from "@/components/layout/header";
-import { Toaster } from "@/components/ui/sonner";
+import type { Metadata } from 'next';
+import { Poppins } from 'next/font/google';
+import './globals.css';
+import Header from '@/components/layout/header';
+import { Toaster } from '@/components/ui/sonner';
 
 const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "800"],
-  variable: "--font-poppins",
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '800'],
+  variable: '--font-poppins',
 });
 
 export const metadata: Metadata = {
-  title: "Impostor Game",
-  description: "Play the impostor game with friends locally!",
+  title: 'Impostor Game',
+  description: 'Play the impostor game with friends locally!',
   appleWebApp: {
-    title: "Impostor",
+    title: 'Impostor',
   },
 };
 

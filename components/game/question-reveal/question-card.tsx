@@ -1,6 +1,6 @@
-import { TypographyH4 } from "@/components/ui/typography";
-import { cn } from "@/lib/utils";
-import { Eye } from "lucide-react";
+import { TypographyH4 } from '@/components/ui/typography';
+import { cn } from '@/lib/utils';
+import { Eye } from 'lucide-react';
 
 export default function QuestionCard({
   question,
@@ -23,8 +23,8 @@ export default function QuestionCard({
     >
       <div
         className={cn(
-          "relative h-full w-full transition-transform duration-500 transform-3d",
-          revealed && "rotate-y-180",
+          'relative h-full w-full transition-transform duration-500 transform-3d',
+          revealed && 'rotate-y-180'
         )}
       >
         <div className="bg-card absolute grid h-full w-full place-items-center rounded-lg border shadow-sm backface-hidden">

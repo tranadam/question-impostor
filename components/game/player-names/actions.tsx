@@ -1,14 +1,14 @@
-"use client";
-import { GameConfig } from "@/types/game";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
-import { ArrowRight } from "lucide-react";
+'use client';
+import { GameConfig } from '@/types/game';
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
+import { ArrowRight } from 'lucide-react';
 
 export default function PlayerNamesActions({
   setNamesEnabled,
   players,
   onNext,
-}: Pick<GameConfig, "players"> & {
+}: Pick<GameConfig, 'players'> & {
   setNamesEnabled: (enabled: boolean) => void;
   onNext: () => void;
 }) {
@@ -19,11 +19,8 @@ export default function PlayerNamesActions({
 
   function handleContinueWithNames() {
     setNamesEnabled(true);
-    if (
-      players.filter((player) => player.name.trim() !== "").length !==
-      players.length
-    ) {
-      toast.warning("Please fill in all player names or skip naming players.");
+    if (players.filter((player) => player.name.trim() !== '').length !== players.length) {
+      toast.warning('Please fill in all player names or skip naming players.');
       return;
     }
     onNext();

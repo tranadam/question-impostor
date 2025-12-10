@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Drawer,
   DrawerClose,
@@ -7,9 +7,9 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-} from "@/components/ui/drawer";
-import { TypographyMuted, TypographyP } from "@/components/ui/typography";
-import { QuestionResponse } from "@/types/openai";
+} from '@/components/ui/drawer';
+import { TypographyMuted, TypographyP } from '@/components/ui/typography';
+import { QuestionResponse } from '@/types/openai';
 
 export function SuggestionsPickDrawer({
   questions,
@@ -28,8 +28,7 @@ export function SuggestionsPickDrawer({
         <DrawerHeader>
           <DrawerTitle>suggested question pairs</DrawerTitle>
           <DrawerDescription>
-            Pick one of the suggested question pairs. You can edit it after
-            picking.
+            Pick one of the suggested question pairs. You can edit it after picking.
           </DrawerDescription>
         </DrawerHeader>
         <div className="mx-auto mt-4 w-full max-w-3xl space-y-2">
@@ -43,15 +42,9 @@ export function SuggestionsPickDrawer({
                 }}
               >
                 <TypographyMuted>Main question</TypographyMuted>
-                <TypographyP className="text-sm not-first:mt-0">
-                  {q.mainQuestion}
-                </TypographyP>
-                <TypographyMuted className="mt-2">
-                  Impostor question
-                </TypographyMuted>
-                <TypographyP className="text-sm not-first:mt-0">
-                  {q.impostorQuestion}
-                </TypographyP>
+                <TypographyP className="text-sm not-first:mt-0">{q.mainQuestion}</TypographyP>
+                <TypographyMuted className="mt-2">Impostor question</TypographyMuted>
+                <TypographyP className="text-sm not-first:mt-0">{q.impostorQuestion}</TypographyP>
               </button>
             ))
           ) : (

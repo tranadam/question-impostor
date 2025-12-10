@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { generateRandomIntFromRange } from "@/lib/random";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { Dices } from "lucide-react";
-import Link from "next/link";
-import { GameConfig, GamePlayer, Player } from "@/types/game";
-import { QuestionResponse } from "@/types/openai";
-import { AiSuggestionDialog } from "@/components/game/question-form/ai-suggestion-dialog";
-import { useState } from "react";
-import { SuggestionsPickDrawer } from "@/components/game/question-form/suggestions-pick-drawer";
+import { generateRandomIntFromRange } from '@/lib/random';
+import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
+import { Dices } from 'lucide-react';
+import Link from 'next/link';
+import { GameConfig, GamePlayer, Player } from '@/types/game';
+import { QuestionResponse } from '@/types/openai';
+import { AiSuggestionDialog } from '@/components/game/question-form/ai-suggestion-dialog';
+import { useState } from 'react';
+import { SuggestionsPickDrawer } from '@/components/game/question-form/suggestions-pick-drawer';
 
 const getUpdatedGamePlayers = (players: Player[], whoAskedIdx: number) => {
   let mixedGamePlayers = players;
@@ -25,15 +25,8 @@ const getUpdatedGamePlayers = (players: Player[], whoAskedIdx: number) => {
   return resetGamePlayers;
 };
 
-const getPlayersWithImpostors = (
-  players: GamePlayer[],
-  impostorCount: number,
-) => {
-  const randomIdxs = generateRandomIntFromRange(
-    0,
-    players.length - 1,
-    impostorCount,
-  );
+const getPlayersWithImpostors = (players: GamePlayer[], impostorCount: number) => {
+  const randomIdxs = generateRandomIntFromRange(0, players.length - 1, impostorCount);
 
   return players.map((player, idx) => ({
     ...player,
@@ -50,57 +43,48 @@ export default function QuestionFormActions({
   updateConfig: (config: Partial<GameConfig>) => void;
   onNext: () => void;
 }) {
-  const [suggestedQuestions, setSuggestedQuestions] = useState<
-    QuestionResponse[]
-  >([]);
+  const [suggestedQuestions, setSuggestedQuestions] = useState<QuestionResponse[]>([]);
   const [suggestionsDrawerOpen, setSuggestionsDrawerOpen] = useState(false);
 
   const handleNext = () => {
-    const gamePlayersWithoutWhoAsked = getUpdatedGamePlayers(
-      config.players,
-      config.whoAskedIdx,
-    );
+    const gamePlayersWithoutWhoAsked = getUpdatedGamePlayers(config.players, config.whoAskedIdx);
     const playersWithImpostors = getPlayersWithImpostors(
       gamePlayersWithoutWhoAsked,
-      config.impostorCount,
+      config.impostorCount
     );
     updateConfig({ currentPlayerIdx: 0, gamePlayers: playersWithImpostors });
     onNext();
   };
 
-  const fetchQuestions = async (
-    categories: string[],
-    context: string,
-    count: number,
-  ) => {
+  const fetchQuestions = async (categories: string[], context: string, count: number) => {
     try {
-      const res = await fetch("/api/questions", {
-        method: "POST",
+      const res = await fetch('/api/questions', {
+        method: 'POST',
         body: JSON.stringify({
           categories,
           context,
           count,
         }),
-        headers: { "Content-Type": "application/json" },
+        headers: { 'Content-Type': 'application/json' },
       });
       if (!res.ok) {
-        throw new Error("Failed to fetch questions: " + res.statusText);
+        throw new Error('Failed to fetch questions: ' + res.statusText);
       }
 
       const data = await res.json();
       const questions = JSON.parse(data) as QuestionResponse[];
       return questions;
     } catch {
-      toast.error("Failed to generate questions. Please try again.");
+      toast.error('Failed to generate questions. Please try again.');
       return [];
     }
   };
 
   const handleRollAiAndPlay = async (categories: string[], context: string) => {
-    toast.info("Generating questions with AI...");
+    toast.info('Generating questions with AI...');
     const questions = await fetchQuestions(categories, context, 1);
     if (questions.length === 0) {
-      toast.error("Failed to generate questions. Please try again.");
+      toast.error('Failed to generate questions. Please try again.');
       return;
     }
 
@@ -112,11 +96,8 @@ export default function QuestionFormActions({
     handleNext();
   };
 
-  const handleGenerateAiSuggestions = async (
-    categories: string[],
-    context: string,
-  ) => {
-    toast.info("Generating questions with AI...");
+  const handleGenerateAiSuggestions = async (categories: string[], context: string) => {
+    toast.info('Generating questions with AI...');
     setSuggestionsDrawerOpen(true);
     const questions = await fetchQuestions(categories, context, 3);
     setSuggestedQuestions(questions);
@@ -126,9 +107,7 @@ export default function QuestionFormActions({
     <div className="flex flex-col gap-2">
       <Button
         disabled={
-          config.mainQuestion === "" ||
-          config.impostorQuestion === "" ||
-          config.whoAskedIdx === -1
+          config.mainQuestion === '' || config.impostorQuestion === '' || config.whoAskedIdx === -1
         }
         onClick={handleNext}
       >

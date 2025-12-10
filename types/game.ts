@@ -24,7 +24,7 @@ export interface GameConfig {
   players: Player[];
   gamePlayers: GamePlayer[];
   currentPlayerIdx: number;
-  gameType: "paper" | "mobile";
+  gameType: 'paper' | 'mobile';
   namesEnabled: boolean;
   mainQuestion: string;
   impostorQuestion: string;
@@ -32,7 +32,7 @@ export interface GameConfig {
 }
 
 export enum StorageKeys {
-  GAME_CONFIG = "game_config",
-  CURRENT_GAME_SCREEN = "current_game_screen",
-  CURRENT_SETUP_SCREEN = "current_setup_screen",
+  GAME_CONFIG = 'game_config',
+  CURRENT_GAME_SCREEN = 'current_game_screen',
+  CURRENT_SETUP_SCREEN = 'current_setup_screen',
 }

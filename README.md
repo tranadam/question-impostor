@@ -1,15 +1,17 @@
 # Question Impostor
 
+## About the game
+
 Question impostor game you can play with friends on a single phone.
 
-Features:
+### Features
 
 - Single phone support
 - AI suggestions based on user categories and preferences
 - Random questions roll so everyone plays
 - Voting screen to reveal the impostor
 
-## Rules
+### Rules
 
 Everyone discretely draws a question and writes down their answer. The
 catch is, some of the players unknowingly receive an impostor question.

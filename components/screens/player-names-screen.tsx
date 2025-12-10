@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { GameConfig, Player } from "@/types/game";
-import PlayerNamesActions from "@/components/game/player-names/actions";
-import PlayerNamesInputs from "@/components/game/player-names/form";
-import PlayerNamesExplanation from "@/components/game/player-names/explanation";
-import Image from "next/image";
+import { GameConfig, Player } from '@/types/game';
+import PlayerNamesActions from '@/components/game/player-names/actions';
+import PlayerNamesInputs from '@/components/game/player-names/form';
+import PlayerNamesExplanation from '@/components/game/player-names/explanation';
+import Image from 'next/image';
 
 export default function PlayerNamesScreen({
   config,
@@ -18,17 +18,13 @@ export default function PlayerNamesScreen({
   onPrev: () => void;
 }) {
   const setPlayerNames = (players: Player[]) => updateConfig({ players });
-  const setNamesEnabled = (namesEnabled: boolean) =>
-    updateConfig({ namesEnabled });
+  const setNamesEnabled = (namesEnabled: boolean) => updateConfig({ namesEnabled });
 
   return (
     <main className="mx-auto mb-16 max-w-2xl px-4">
       <PlayerNamesExplanation onPrev={onPrev} />
       <div className="mt-4 mb-8">
-        <PlayerNamesInputs
-          players={config.players}
-          setPlayerNames={setPlayerNames}
-        />
+        <PlayerNamesInputs players={config.players} setPlayerNames={setPlayerNames} />
       </div>
       <PlayerNamesActions
         setNamesEnabled={setNamesEnabled}

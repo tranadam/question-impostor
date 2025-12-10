@@ -1,6 +1,6 @@
-import { GameConfig } from "@/types/game";
-import { GameVariantActions } from "@/components/game/variant-selection/actions";
-import GameVariantExplanation from "@/components/game/variant-selection/explanation";
+import { GameConfig } from '@/types/game';
+import { GameVariantActions } from '@/components/game/variant-selection/actions';
+import GameVariantExplanation from '@/components/game/variant-selection/explanation';
 
 export default function VariantScreen({
   config,
@@ -17,11 +17,7 @@ export default function VariantScreen({
     <main className="mx-auto mb-16 max-w-2xl px-4">
       <GameVariantExplanation onPrev={onPrev} />
       <div className="mt-6">
-        <GameVariantActions
-          config={config}
-          updateConfig={updateConfig}
-          onNext={onNext}
-        />
+        <GameVariantActions config={config} updateConfig={updateConfig} onNext={onNext} />
       </div>
     </main>
   );

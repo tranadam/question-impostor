@@ -1,12 +1,12 @@
-import { Progress } from "@/components/ui/progress";
-import { TypographyMuted, TypographySmall } from "@/components/ui/typography";
-import { ArrowRight } from "lucide-react";
-import { GameConfig } from "@/types/game";
+import { Progress } from '@/components/ui/progress';
+import { TypographyMuted, TypographySmall } from '@/components/ui/typography';
+import { ArrowRight } from 'lucide-react';
+import { GameConfig } from '@/types/game';
 
 export function PlayerOrderDisplay({
   players,
   currentPlayerIdx: currIdx,
-}: Pick<GameConfig, "players" | "currentPlayerIdx">) {
+}: Pick<GameConfig, 'players' | 'currentPlayerIdx'>) {
   return (
     <div className="flex items-center gap-2">
       {currIdx === players.length - 1 && players.length >= 3 && (
@@ -42,24 +42,18 @@ export default function RevealProgress({
   namesEnabled,
   players,
   currentPlayerIdx,
-}: Pick<GameConfig, "namesEnabled" | "players" | "currentPlayerIdx">) {
+}: Pick<GameConfig, 'namesEnabled' | 'players' | 'currentPlayerIdx'>) {
   return (
     <div>
       <div className="flex items-center justify-between">
         {namesEnabled && (
-          <PlayerOrderDisplay
-            players={players}
-            currentPlayerIdx={currentPlayerIdx}
-          />
+          <PlayerOrderDisplay players={players} currentPlayerIdx={currentPlayerIdx} />
         )}
         <TypographySmall>
           {currentPlayerIdx + 1} / {players.length}
         </TypographySmall>
       </div>
-      <Progress
-        className="mt-2"
-        value={((currentPlayerIdx + 1) / players.length) * 100}
-      />
+      <Progress className="mt-2" value={((currentPlayerIdx + 1) / players.length) * 100} />
     </div>
   );
 }

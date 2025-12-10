@@ -1,6 +1,6 @@
-import { GameConfig } from "@/types/game";
-import GameSetup from "@/components/game/setup/game-setup";
-import Rules from "@/components/game/setup/rules";
+import { GameConfig } from '@/types/game';
+import GameSetup from '@/components/game/setup/game-setup';
+import Rules from '@/components/game/setup/rules';
 
 export default function LandingScreen({
   config,
@@ -14,11 +14,7 @@ export default function LandingScreen({
   return (
     <main className="mx-auto mb-16 max-w-2xl px-4">
       <div className="mt-8 mb-12">
-        <GameSetup
-          config={config}
-          updateConfig={updateConfig}
-          onNext={onNext}
-        />
+        <GameSetup config={config} updateConfig={updateConfig} onNext={onNext} />
       </div>
       <Rules />
     </main>

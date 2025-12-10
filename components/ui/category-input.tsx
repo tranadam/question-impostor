@@ -1,7 +1,7 @@
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { X } from "lucide-react";
-import React from "react";
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { X } from 'lucide-react';
+import React from 'react';
 
 export function CategoryInput({
   setCategories,
@@ -9,14 +9,14 @@ export function CategoryInput({
 }: {
   setCategories: React.Dispatch<React.SetStateAction<string[]>>;
 } & React.InputHTMLAttributes<HTMLInputElement>) {
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState('');
   const [items, setItems] = React.useState<string[]>([]);
 
   function addItem(v: string) {
     const trimmed = v.trim();
     if (!trimmed || items.includes(trimmed)) return;
     setItems([...items, trimmed]);
-    setValue("");
+    setValue('');
   }
 
   function removeItem(v: string) {
@@ -41,11 +41,11 @@ export function CategoryInput({
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === ",") {
+          if (e.key === 'Enter' || e.key === ',') {
             e.preventDefault();
             addItem(value);
           }
-          if (e.key === "Backspace" && !value) {
+          if (e.key === 'Backspace' && !value) {
             setItems(items.slice(0, -1));
           }
           setCategories(items);

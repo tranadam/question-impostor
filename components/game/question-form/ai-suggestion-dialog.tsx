@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import * as React from "react";
+import * as React from 'react';
 
-import { useMediaQuery } from "@/lib/hooks/use-media-query";
-import { Button } from "@/components/ui/button";
+import { useMediaQuery } from '@/lib/hooks/use-media-query';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -11,7 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import {
   Drawer,
   DrawerClose,
@@ -21,11 +21,11 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Bot, Loader2, Rocket, Sparkles } from "lucide-react";
-import { CategoryInput } from "@/components/ui/category-input";
+} from '@/components/ui/drawer';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Bot, Loader2, Rocket, Sparkles } from 'lucide-react';
+import { CategoryInput } from '@/components/ui/category-input';
 
 export function AiSuggestionDialog({
   onRollAndPlay,
@@ -36,11 +36,11 @@ export function AiSuggestionDialog({
   onGenerateSuggestions: (c: string[], p: string) => Promise<void>;
 }) {
   const [open, setOpen] = React.useState(false);
-  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const isDesktop = useMediaQuery('(min-width: 768px)');
 
-  const title = "generate questions";
+  const title = 'generate questions';
   const description =
-    "Get inspired by AI-generated questions. You can either roll one randomly and everyone plays, or one player picks and edits one of the suggestions.";
+    'Get inspired by AI-generated questions. You can either roll one randomly and everyone plays, or one player picks and edits one of the suggestions.';
   const triggerContent = (
     <>
       <Sparkles />
@@ -108,7 +108,7 @@ function AiSuggestionsForm({
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [categories, setCategories] = React.useState<string[]>([]);
-  const [context, setContext] = React.useState<string>("");
+  const [context, setContext] = React.useState<string>('');
   const [loadingRoll, setLoadingRoll] = React.useState(false);
 
   return (

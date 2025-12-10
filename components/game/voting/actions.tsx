@@ -1,11 +1,11 @@
-import { Button } from "@/components/ui/button";
-import NumericInput from "@/components/ui/numeric-input";
-import { TypographySmall } from "@/components/ui/typography";
-import { cn } from "@/lib/utils";
-import { GameConfig, GamePlayer } from "@/types/game";
-import { Eye, Repeat } from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
+import { Button } from '@/components/ui/button';
+import NumericInput from '@/components/ui/numeric-input';
+import { TypographySmall } from '@/components/ui/typography';
+import { cn } from '@/lib/utils';
+import { GameConfig, GamePlayer } from '@/types/game';
+import { Eye, Repeat } from 'lucide-react';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
 function PlayersVotingList({
   namesEnabled,
@@ -32,24 +32,16 @@ function PlayersVotingList({
         <div
           key={player.id}
           className={cn(
-            "flex items-center justify-between gap-2 rounded-lg border px-4 py-2 shadow-sm",
-            submitted && player.isImpostor
-              ? "bg-primary/20 border-primary/60"
-              : "bg-card",
+            'flex items-center justify-between gap-2 rounded-lg border px-4 py-2 shadow-sm',
+            submitted && player.isImpostor ? 'bg-primary/20 border-primary/60' : 'bg-card'
           )}
         >
-          <TypographySmall>
-            {namesEnabled ? player.name : "Player " + player.id}
-          </TypographySmall>
+          <TypographySmall>{namesEnabled ? player.name : 'Player ' + player.id}</TypographySmall>
           <NumericInput
             size="sm"
             value={votes[player.id]}
-            onChange={(event) =>
-              handleVoteChange(player.id, Number(event.target.value))
-            }
-            onDecrease={() =>
-              handleVoteChange(player.id, Math.max(0, votes[player.id] - 1))
-            }
+            onChange={(event) => handleVoteChange(player.id, Number(event.target.value))}
+            onDecrease={() => handleVoteChange(player.id, Math.max(0, votes[player.id] - 1))}
             onIncrease={() => handleVoteChange(player.id, votes[player.id] + 1)}
             disabled={submitted}
           />
@@ -64,7 +56,7 @@ export default function VotingActions({
   namesEnabled,
   updateConfig,
   onNext,
-}: Pick<GameConfig, "gamePlayers" | "namesEnabled"> & {
+}: Pick<GameConfig, 'gamePlayers' | 'namesEnabled'> & {
   updateConfig: (config: Partial<GameConfig>) => void;
   onNext: () => void;
 }) {
@@ -73,7 +65,7 @@ export default function VotingActions({
       acc[player.id] = 0;
       return acc;
     },
-    {} as Record<number, number>,
+    {} as Record<number, number>
   );
   const [votes, setVotes] = useState<Record<number, number>>(initialVotes);
   const [submitted, setSubmitted] = useState(false);
@@ -81,8 +73,8 @@ export default function VotingActions({
   const handlePlayAgain = () => {
     updateConfig({
       currentPlayerIdx: 0,
-      mainQuestion: "",
-      impostorQuestion: "",
+      mainQuestion: '',
+      impostorQuestion: '',
     });
     onNext();
   };
@@ -90,10 +82,7 @@ export default function VotingActions({
   const handleVoteSubmit = () => {
     setSubmitted(true);
     // Count total votes
-    const totalVotes = Object.values(votes).reduce(
-      (sum, count) => sum + count,
-      0,
-    );
+    const totalVotes = Object.values(votes).reduce((sum, count) => sum + count, 0);
     const impostorVotes = Object.entries(votes)
       .filter(([playerId]) => {
         const player = gamePlayers.find((p) => p.id === Number(playerId));
@@ -104,13 +93,13 @@ export default function VotingActions({
     if (impostorVotes > totalVotes / 2) {
       toast.info(
         `Crewmates win! ${impostorVotes} out of ${totalVotes} votes were for the impostor.`,
-        { duration: 8000 },
+        { duration: 8000 }
       );
       return;
     } else {
       toast.info(
         `Impostor wins! Only ${impostorVotes} out of ${totalVotes} votes were for the impostor.`,
-        { duration: 8000 },
+        { duration: 8000 }
       );
     }
   };
@@ -124,11 +113,7 @@ export default function VotingActions({
         setVotes={setVotes}
         submitted={submitted}
       />
-      <Button
-        disabled={submitted}
-        onClick={handleVoteSubmit}
-        className="mt-6 w-full"
-      >
+      <Button disabled={submitted} onClick={handleVoteSubmit} className="mt-6 w-full">
         <Eye />
         vote & reveal
       </Button>

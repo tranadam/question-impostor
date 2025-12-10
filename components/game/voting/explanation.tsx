@@ -1,13 +1,7 @@
-import {
-  TypographyBlockquote,
-  TypographyH2,
-  TypographyP,
-} from "@/components/ui/typography";
-import { GameConfig } from "@/types/game";
+import { TypographyBlockquote, TypographyH2, TypographyP } from '@/components/ui/typography';
+import { GameConfig } from '@/types/game';
 
-export default function VotingExplanation({
-  mainQuestion,
-}: Pick<GameConfig, "mainQuestion">) {
+export default function VotingExplanation({ mainQuestion }: Pick<GameConfig, 'mainQuestion'>) {
   return (
     <section>
       <TypographyH2>Voting</TypographyH2>

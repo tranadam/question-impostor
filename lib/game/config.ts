@@ -1,4 +1,4 @@
-import { GameConfig } from "@/types/game";
+import { GameConfig } from '@/types/game';
 
 export const MAX_PLAYERS = 12;
 
@@ -11,18 +11,18 @@ export const INITIAL_GAME_CONFIG: GameConfig = {
   impostorCount: MIN_IMPOSTORS,
   players: Array.from({ length: MIN_PLAYERS }, (_, index) => ({
     id: index + 1,
-    name: "",
+    name: '',
     isImpostor: false,
   })),
   gamePlayers: Array.from({ length: MIN_PLAYERS }, (_, index) => ({
     id: index + 1,
-    name: "",
+    name: '',
     isImpostor: false,
   })),
   currentPlayerIdx: 0,
-  gameType: "paper",
+  gameType: 'paper',
   namesEnabled: true,
-  mainQuestion: "",
-  impostorQuestion: "",
+  mainQuestion: '',
+  impostorQuestion: '',
   whoAskedIdx: -1,
 };

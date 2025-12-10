@@ -1,8 +1,8 @@
-import QuestionCard from "@/components/game/question-reveal/question-card";
-import { Button } from "@/components/ui/button";
-import { GameConfig } from "@/types/game";
-import { ArrowRight } from "lucide-react";
-import { useState } from "react";
+import QuestionCard from '@/components/game/question-reveal/question-card';
+import { Button } from '@/components/ui/button';
+import { GameConfig } from '@/types/game';
+import { ArrowRight } from 'lucide-react';
+import { useState } from 'react';
 
 export default function QuestionRevealAction({
   mainQuestion,
@@ -11,19 +11,14 @@ export default function QuestionRevealAction({
   currentPlayerIdx,
   setCurrentPlayerIdx,
   onNext,
-}: Pick<
-  GameConfig,
-  "mainQuestion" | "impostorQuestion" | "gamePlayers" | "currentPlayerIdx"
-> & {
+}: Pick<GameConfig, 'mainQuestion' | 'impostorQuestion' | 'gamePlayers' | 'currentPlayerIdx'> & {
   setCurrentPlayerIdx: (idx: number) => void;
   onNext: () => void;
 }) {
   const [nextReady, setNextReady] = useState(false);
   const [cardRevealed, setCardRevealed] = useState(false);
 
-  const question = gamePlayers[currentPlayerIdx].isImpostor
-    ? impostorQuestion
-    : mainQuestion;
+  const question = gamePlayers[currentPlayerIdx].isImpostor ? impostorQuestion : mainQuestion;
 
   const handleNextPlayer = () => {
     if (currentPlayerIdx + 1 >= gamePlayers.length) {
@@ -44,11 +39,7 @@ export default function QuestionRevealAction({
         setRevealed={setCardRevealed}
       />
       <div className="flex justify-end">
-        <Button
-          disabled={!nextReady}
-          className="mt-8"
-          onClick={handleNextPlayer}
-        >
+        <Button disabled={!nextReady} className="mt-8" onClick={handleNextPlayer}>
           <ArrowRight />
           continue
         </Button>

@@ -1,9 +1,9 @@
-import { IconCard } from "@/components/ui/icon-card";
-import PenAndPaper from "@/components/illustrations/pen-and-paper.svg";
-import Phone from "@/components/illustrations/phone.svg";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
-import { GameConfig } from "@/types/game";
+import { IconCard } from '@/components/ui/icon-card';
+import PenAndPaper from '@/components/illustrations/pen-and-paper.svg';
+import Phone from '@/components/illustrations/phone.svg';
+import { Button } from '@/components/ui/button';
+import { ArrowRight } from 'lucide-react';
+import { GameConfig } from '@/types/game';
 
 export function GameVariantActions({
   config,
@@ -16,7 +16,7 @@ export function GameVariantActions({
 }) {
   const handleChooseMode = () => {
     if (config.gameType === null) return;
-    updateConfig({ mainQuestion: "", impostorQuestion: "" });
+    updateConfig({ mainQuestion: '', impostorQuestion: '' });
     onNext();
   };
 
@@ -24,26 +24,22 @@ export function GameVariantActions({
     <section>
       <div className="mb-4 grid grid-cols-2 gap-2">
         <IconCard
-          onClick={() => updateConfig({ gameType: "paper" })}
+          onClick={() => updateConfig({ gameType: 'paper' })}
           heading="Pen & Paper"
           description="Every player writes their answer on paper"
           icon={PenAndPaper}
-          active={config.gameType === "paper"}
+          active={config.gameType === 'paper'}
         />
         <IconCard
-          onClick={() => updateConfig({ gameType: "mobile" })}
+          onClick={() => updateConfig({ gameType: 'mobile' })}
           heading="Mobile"
           description="Players write their answers directly into the phone"
           icon={Phone}
-          active={config.gameType === "mobile"}
+          active={config.gameType === 'mobile'}
           disabled
         />
       </div>
-      <Button
-        onClick={handleChooseMode}
-        disabled={config.gameType === null}
-        className="w-full"
-      >
+      <Button onClick={handleChooseMode} disabled={config.gameType === null} className="w-full">
         <ArrowRight />
         choose mode
       </Button>

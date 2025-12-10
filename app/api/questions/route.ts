@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import OpenAI from "openai";
+import { NextResponse } from 'next/server';
+import OpenAI from 'openai';
 
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -10,22 +10,18 @@ export async function POST(req: Request) {
   if (
     !categories ||
     !Array.isArray(categories) ||
-    typeof context !== "string" ||
-    typeof count !== "number"
+    typeof context !== 'string' ||
+    typeof count !== 'number'
   ) {
     return NextResponse.json(
       {
-        error:
-          "categories must be an array, context a string and count a number",
+        error: 'categories must be an array, context a string and count a number',
       },
-      { status: 400 },
+      { status: 400 }
     );
   }
   if (count < 1 || count > 5) {
-    return NextResponse.json(
-      { error: "count must be between 1 and 5" },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: 'count must be between 1 and 5' }, { status: 400 });
   }
   const prompt = `
 You create questions for a chaotic party game played by Gen Z friends (18-25).
@@ -68,7 +64,7 @@ What age is the youngest you would date? / Say a random number between 10 and 50
 Which country would you want to live in the least? / What was the country you last visited?
 
 User Input:
-Categories: "${categories.join(", ")}"
+Categories: "${categories.join(', ')}"
 User context: "${context}"
 
 Task:
@@ -83,7 +79,7 @@ No explanations. No extra text.
   `;
 
   const response = await client.responses.create({
-    model: "gpt-4.1-nano",
+    model: 'gpt-4.1-nano',
     input: prompt,
   });
 
