@@ -1,7 +1,10 @@
+import { Button } from "@/components/ui/button";
 import {
   Drawer,
+  DrawerClose,
   DrawerContent,
   DrawerDescription,
+  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
@@ -12,7 +15,7 @@ export function SuggestionsPickDrawer({
   questions,
   open,
   onPick,
-  onClose
+  onClose,
 }: {
   onPick: (main: string, impostor: string) => void;
   questions: QuestionResponse[];
@@ -28,37 +31,42 @@ export function SuggestionsPickDrawer({
             Pick one of the suggested question pairs. You can edit it after
             picking.
           </DrawerDescription>
-          <div className="mt-4 space-y-2  max-w-3xl mx-auto">
-            {questions.length > 0 ? (
-              questions.map((q, idx) => (
-                <button
-                  key={idx}
-                  className="bg-background hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive w-full cursor-pointer rounded-md border px-4 py-2 text-left shadow-xs transition-all focus-visible:ring-[3px]"
-                  onClick={() => {
-                    onPick(q.mainQuestion, q.impostorQuestion);
-                  }}
-                >
-                  <TypographyMuted>Main question</TypographyMuted>
-                  <TypographyP className="text-sm not-first:mt-0">
-                    {q.mainQuestion}
-                  </TypographyP>
-                  <TypographyMuted className="mt-2">
-                    Impostor question
-                  </TypographyMuted>
-                  <TypographyP className="text-sm not-first:mt-0">
-                    {q.impostorQuestion}
-                  </TypographyP>
-                </button>
-              ))
-            ) : (
-              <>
-                <div className="bg-secondary h-20 w-full animate-pulse rounded-md"></div>
-                <div className="bg-secondary h-20 w-full animate-pulse rounded-md delay-100"></div>
-                <div className="bg-secondary h-20 w-full animate-pulse rounded-md delay-200"></div>
-              </>
-            )}
-          </div>
         </DrawerHeader>
+        <div className="mx-auto mt-4 w-full max-w-3xl space-y-2">
+          {questions.length > 0 ? (
+            questions.map((q, idx) => (
+              <button
+                key={idx}
+                className="bg-background hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive w-full cursor-pointer rounded-md border px-4 py-2 text-left shadow-xs transition-all focus-visible:ring-[3px]"
+                onClick={() => {
+                  onPick(q.mainQuestion, q.impostorQuestion);
+                }}
+              >
+                <TypographyMuted>Main question</TypographyMuted>
+                <TypographyP className="text-sm not-first:mt-0">
+                  {q.mainQuestion}
+                </TypographyP>
+                <TypographyMuted className="mt-2">
+                  Impostor question
+                </TypographyMuted>
+                <TypographyP className="text-sm not-first:mt-0">
+                  {q.impostorQuestion}
+                </TypographyP>
+              </button>
+            ))
+          ) : (
+            <>
+              <div className="bg-secondary h-20 w-full animate-pulse rounded-md"></div>
+              <div className="bg-secondary h-20 w-full animate-pulse rounded-md delay-100"></div>
+              <div className="bg-secondary h-20 w-full animate-pulse rounded-md delay-200"></div>
+            </>
+          )}
+        </div>
+        <DrawerFooter className="mx-auto max-w-3xl">
+          <DrawerClose asChild>
+            <Button variant="outline">Cancel</Button>
+          </DrawerClose>
+        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   );

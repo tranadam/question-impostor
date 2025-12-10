@@ -146,7 +146,10 @@ export default function QuestionFormActions({
           setSuggestionsDrawerOpen(false);
         }}
         open={suggestionsDrawerOpen}
-        onClose={() => setSuggestedQuestions([])}
+        onClose={() => {
+          setSuggestedQuestions([]);
+          setSuggestionsDrawerOpen(false);
+        }}
       />
       <Button variant="ghost" asChild>
         <Link href="/">change settings</Link>
