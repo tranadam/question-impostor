@@ -7,13 +7,13 @@ import { useState } from "react";
 export default function QuestionRevealAction({
   mainQuestion,
   impostorQuestion,
-  players,
+  gamePlayers,
   currentPlayerIdx,
   setCurrentPlayerIdx,
   onNext,
 }: Pick<
   GameConfig,
-  "mainQuestion" | "impostorQuestion" | "players" | "currentPlayerIdx"
+  "mainQuestion" | "impostorQuestion" | "gamePlayers" | "currentPlayerIdx"
 > & {
   setCurrentPlayerIdx: (idx: number) => void;
   onNext: () => void;
@@ -21,12 +21,12 @@ export default function QuestionRevealAction({
   const [nextReady, setNextReady] = useState(false);
   const [cardRevealed, setCardRevealed] = useState(false);
 
-  const question = players[currentPlayerIdx].isImpostor
+  const question = gamePlayers[currentPlayerIdx].isImpostor
     ? impostorQuestion
     : mainQuestion;
 
   const handleNextPlayer = () => {
-    if (currentPlayerIdx + 1 >= players.length) {
+    if (currentPlayerIdx + 1 >= gamePlayers.length) {
       onNext();
       return;
     }

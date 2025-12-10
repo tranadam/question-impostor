@@ -16,7 +16,7 @@ export default function SetupWizard() {
       StorageKeys.CURRENT_SETUP_SCREEN,
       SetupScreen.LANDING,
     );
-  const [currentGameScreen, setCurrentGameScreen] = useGameStorage<GameScreen>(
+  const [, setCurrentGameScreen] = useGameStorage<GameScreen>(
     StorageKeys.CURRENT_GAME_SCREEN,
     GameScreen.QUESTION_FORM,
   );

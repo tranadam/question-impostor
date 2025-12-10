@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import NumericInput from "@/components/ui/numeric-input";
 import { TypographySmall } from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
-import { GameConfig, Player } from "@/types/game";
+import { GameConfig, GamePlayer } from "@/types/game";
 import { Eye, Repeat } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -15,7 +15,7 @@ function PlayersVotingList({
   submitted,
 }: {
   namesEnabled: boolean;
-  players: Player[];
+  players: GamePlayer[];
   votes: Record<number, number>;
   setVotes: React.Dispatch<React.SetStateAction<Record<number, number>>>;
   submitted: boolean;
@@ -60,15 +60,15 @@ function PlayersVotingList({
 }
 
 export default function VotingActions({
-  players,
+  gamePlayers,
   namesEnabled,
   updateConfig,
   onNext,
-}: Pick<GameConfig, "players" | "namesEnabled"> & {
+}: Pick<GameConfig, "gamePlayers" | "namesEnabled"> & {
   updateConfig: (config: Partial<GameConfig>) => void;
   onNext: () => void;
 }) {
-  const initialVotes = players.reduce(
+  const initialVotes = gamePlayers.reduce(
     (acc, player) => {
       acc[player.id] = 0;
       return acc;
@@ -95,8 +95,8 @@ export default function VotingActions({
       0,
     );
     const impostorVotes = Object.entries(votes)
-      .filter(([playerId, votes]) => {
-        const player = players.find((p) => p.id === Number(playerId));
+      .filter(([playerId]) => {
+        const player = gamePlayers.find((p) => p.id === Number(playerId));
         return player?.isImpostor;
       })
       .reduce((sum, [, count]) => sum + count, 0);
@@ -119,7 +119,7 @@ export default function VotingActions({
     <div>
       <PlayersVotingList
         namesEnabled={namesEnabled}
-        players={players}
+        players={gamePlayers}
         votes={votes}
         setVotes={setVotes}
         submitted={submitted}

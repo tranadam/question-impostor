@@ -19,7 +19,7 @@ export default function QuestionRevealScreen({
         currentPlayerIdx={config.currentPlayerIdx}
       />
       <QuestionRevealAction
-        players={config.gamePlayers}
+        gamePlayers={config.gamePlayers}
         impostorQuestion={config.impostorQuestion}
         mainQuestion={config.mainQuestion}
         currentPlayerIdx={config.currentPlayerIdx}
