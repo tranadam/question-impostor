@@ -24,5 +24,5 @@ export const INITIAL_GAME_CONFIG: GameConfig = {
   namesEnabled: true,
   mainQuestion: "",
   impostorQuestion: "",
-  whoAskedId: -1,
+  whoAskedIdx: -1,
 };

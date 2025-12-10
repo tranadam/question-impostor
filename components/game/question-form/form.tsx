@@ -64,7 +64,7 @@ export default function QuestionForm({
             <SelectContent>
               {config.players.map((player, idx) => (
                 <SelectItem key={player.id} value={idx.toString()}>
-                  {player.name}
+                  {player.name ? player.name : `Player ${player.id}`}
                 </SelectItem>
               ))}
             </SelectContent>
