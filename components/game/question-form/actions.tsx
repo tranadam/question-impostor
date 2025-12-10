@@ -1,24 +1,28 @@
 "use client";
 
 import { generateRandomIntFromRange } from "@/lib/random";
-import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Dices, Sparkles } from "lucide-react";
+import { Dices } from "lucide-react";
 import Link from "next/link";
 import { GameConfig, GamePlayer, Player } from "@/types/game";
 import { QuestionResponse } from "@/types/openai";
+import { AiSuggestionDialog } from "@/components/game/question-form/ai-suggestion-dialog";
+import { useState } from "react";
+import { SuggestionsPickDrawer } from "@/components/game/question-form/suggestions-pick-drawer";
 
 const getUpdatedGamePlayers = (players: Player[], whoAskedIdx: number) => {
-  const afterPlayers = players.slice(whoAskedIdx + 1, players.length);
-  const beforePlayers = players.slice(0, whoAskedIdx);
-  const updatedGamePlayers = [...afterPlayers, ...beforePlayers].map(
-    (player) => ({
-      ...player,
-      isImpostor: false,
-    }),
-  );
-  return updatedGamePlayers;
+  let mixedGamePlayers = players;
+  if (whoAskedIdx !== -1) {
+    const afterPlayers = players.slice(whoAskedIdx + 1, players.length);
+    const beforePlayers = players.slice(0, whoAskedIdx);
+    mixedGamePlayers = afterPlayers.concat(beforePlayers);
+  }
+  const resetGamePlayers = mixedGamePlayers.map((player) => ({
+    ...player,
+    isImpostor: false,
+  }));
+  return resetGamePlayers;
 };
 
 const getPlayersWithImpostors = (
@@ -46,8 +50,10 @@ export default function QuestionFormActions({
   updateConfig: (config: Partial<GameConfig>) => void;
   onNext: () => void;
 }) {
-  const [loadingAI, setLoadingAI] = useState(false);
-  const [aiSuggestions, setAiSuggestions] = useState<QuestionResponse[]>([]);
+  const [suggestedQuestions, setSuggestedQuestions] = useState<
+    QuestionResponse[]
+  >([]);
+  const [suggestionsDrawerOpen, setSuggestionsDrawerOpen] = useState(false);
 
   const handleNext = () => {
     const gamePlayersWithoutWhoAsked = getUpdatedGamePlayers(
@@ -62,31 +68,58 @@ export default function QuestionFormActions({
     onNext();
   };
 
-  const handleAiInspiration = async () => {
-    setLoadingAI(true);
-    let questions: QuestionResponse[] = [];
-
-    const fetchQuestions = async () => {
+  const fetchQuestions = async (
+    categories: string[],
+    context: string,
+    count: number,
+  ) => {
+    try {
       const res = await fetch("/api/questions", {
         method: "POST",
         body: JSON.stringify({
-          categories: ["funny", "personal", "embarrassing"],
+          categories,
+          context,
+          count,
         }),
         headers: { "Content-Type": "application/json" },
       });
+      if (!res.ok) {
+        throw new Error("Failed to fetch questions: " + res.statusText);
+      }
+
       const data = await res.json();
-      questions = JSON.parse(data) as QuestionResponse[];
+      const questions = JSON.parse(data) as QuestionResponse[];
+      return questions;
+    } catch {
+      toast.error("Failed to generate questions. Please try again.");
+      return [];
+    }
+  };
 
-      setAiSuggestions(questions);
-      console.log(questions);
-      setLoadingAI(false);
-    };
+  const handleRollAiAndPlay = async (categories: string[], context: string) => {
+    toast.info("Generating questions with AI...");
+    const questions = await fetchQuestions(categories, context, 1);
+    if (questions.length === 0) {
+      toast.error("Failed to generate questions. Please try again.");
+      return;
+    }
 
-    toast.promise(fetchQuestions, {
-      loading: "Generating questions with AI...",
-      success: "Suggestions loaded!",
-      error: "Failed to get AI suggestions:(",
+    updateConfig({
+      mainQuestion: questions[0].mainQuestion,
+      impostorQuestion: questions[0].impostorQuestion,
+      whoAskedIdx: -1,
     });
+    handleNext();
+  };
+
+  const handleGenerateAiSuggestions = async (
+    categories: string[],
+    context: string,
+  ) => {
+    toast.info("Generating questions with AI...");
+    setSuggestionsDrawerOpen(true);
+    const questions = await fetchQuestions(categories, context, 3);
+    setSuggestedQuestions(questions);
   };
 
   return (
@@ -102,18 +135,22 @@ export default function QuestionFormActions({
         <Dices />
         let&apos;s play
       </Button>
-      <Button
-        onClick={handleAiInspiration}
-        variant="outline"
-        disabled={loadingAI}
-      >
-        <Sparkles />
-        get inspired by ai
-      </Button>
+      <AiSuggestionDialog
+        onGenerateSuggestions={handleGenerateAiSuggestions}
+        onRollAndPlay={handleRollAiAndPlay}
+      />
+      <SuggestionsPickDrawer
+        questions={suggestedQuestions}
+        onPick={(main: string, impostor: string) => {
+          updateConfig({ mainQuestion: main, impostorQuestion: impostor });
+          setSuggestionsDrawerOpen(false);
+        }}
+        open={suggestionsDrawerOpen}
+        onClose={() => setSuggestedQuestions([])}
+      />
       <Button variant="ghost" asChild>
         <Link href="/">change settings</Link>
       </Button>
-      {JSON.stringify(aiSuggestions)}
     </div>
   );
 }
