@@ -1,5 +1,7 @@
 # Question Impostor
 
+[![CI Pipeline](https://github.com/tranadam/question-impostor/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/tranadam/question-impostor/actions/workflows/ci.yml)
+
 ## About the game
 
 Question impostor game you can play with friends on a single phone.
