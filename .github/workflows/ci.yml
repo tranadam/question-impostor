@@ -46,3 +46,5 @@ jobs:
 
       - name: Build project
         run: pnpm run build
+        env:
+          OPENAI_KEY: ${{ secrets.OPENAI_KEY }}s
