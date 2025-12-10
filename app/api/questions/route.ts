@@ -6,17 +6,30 @@ const client = new OpenAI({
 });
 
 export async function POST(req: Request) {
-  const { categories } = await req.json();
-
-  if (!categories || !Array.isArray(categories)) {
+  const { categories, preferences, count } = await req.json();
+  if (
+    !categories ||
+    !Array.isArray(categories) ||
+    categories.length === 0 ||
+    typeof preferences !== "string" ||
+    typeof count !== "number"
+  ) {
     return NextResponse.json(
-      { error: "categories must be an array" },
+      {
+        error:
+          "categories must be a nonempty array, preferences a string and count a number",
+      },
       { status: 400 },
     );
   }
-
+  if (count < 1 || count > 5) {
+    return NextResponse.json(
+      { error: "count must be between 1 and 5" },
+      { status: 400 },
+    );
+  }
   const prompt = `
-You create fun, social deduction questions for a party game. The game goes like this:
+You create fun questions for a party game. The game goes like this:
 
 Everyone discretely draws a question and writes down their answer.
 The catch is, some of the players unknowingly receive an impostor question.
@@ -25,21 +38,23 @@ Players discuss who they think the impostor is, then vote.
 If the majority correctly identifies the impostor, they win. If not, the impostor wins!
 
 The question should be engaging, witty, embarrassing, or thought-provoking to spark lively discussions.
-It is usually played among friends of age 18-25 (Gen Z) or at social gatherings.
+It is usually played among friends of age 18-25 (Gen Z) at social gatherings.
 
 The answers to the question should be subjective and open-ended, allowing for a variety of responses.
-It could be a number, word, or a short sentence. Do NOT be generic, cringe, too specific.
+It could be a number, word, or a short sentence. Do NOT be normie, generic or boring.
 
-Generate 3 unique question ideas with the main question and impostor question based on the categories below.
+Generate ${count} unique question ideas with the main question and impostor question based on the categories below.
 Both questions should have a similar theme and answer style. For example, both could require a one-word answer, or both could require a number.
 If an answer is someone's name at the table, then the impostor question should also lead to a name as an answer.
 However, the questions should never be identical in meaning.
+
+Extract categories from this user input: "${categories.join(", ")}"
+Take inspiration by these additional preferences from user: "${preferences}"
 
 Return JSON ONLY in this format:
 [ {"mainQuestion": "string", "impostorQuestion": "string" }, ... ]
 Do NOT include any explanations or additional text.
 
-Categories: ${categories.join(", ")}
   `;
 
   const response = await client.responses.create({
