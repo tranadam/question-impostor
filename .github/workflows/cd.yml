@@ -60,7 +60,7 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_PRIVATE_KEY }}
-          source: 'docker-compose.yml'
+          source: 'compose.yml'
           target: '/var/www/impostor.adamtran.cz'
 
       - name: Deploy to VPS
