@@ -1,0 +1,9 @@
+services:
+  impostor-nextjs:
+    image: "ghcr.io/adamtran/question-impostor:latest"
+    container_name: impostor-app
+    restart: unless-stopped
+    ports:
+      - "8302:3000"
+    environment:
+      - NODE_ENV=production
