@@ -7,3 +7,5 @@ services:
       - '8302:3000'
     environment:
       - NODE_ENV=production
+    env_file:
+      - .env
