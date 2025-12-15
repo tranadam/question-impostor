@@ -6,6 +6,7 @@ import { GameConfig, GameScreen, StorageKeys } from '@/types/game';
 import QuestionFormScreen from '@/components/screens/question-form-screen';
 import QuestionRevealScreen from '@/components/screens/question-reveal-screen';
 import VotingScreen from '@/components/screens/voting-screen';
+import AnswerRevealScreen from '@/components/screens/answer-reveal-screen';
 
 export default function Game() {
   const [currentGameScreen, setCurrentGameScreen] = useGameStorage<GameScreen>(
@@ -27,15 +28,20 @@ export default function Game() {
       if (prev === GameScreen.VOTING) {
         return GameScreen.QUESTION_FORM;
       }
+      if (prev + 1 === GameScreen.ANSWER_REVEAL && config.gameType === 'mobile') {
+        return GameScreen.ANSWER_REVEAL + 1;
+      }
       return prev + 1;
     });
 
-  const CurrentScreenComponent =
-    currentGameScreen === GameScreen.QUESTION_FORM
-      ? QuestionFormScreen
-      : currentGameScreen === GameScreen.QUESTION_REVEAL
-        ? QuestionRevealScreen
-        : VotingScreen;
+  const screenMap = {
+    [GameScreen.QUESTION_FORM]: QuestionFormScreen,
+    [GameScreen.QUESTION_REVEAL]: QuestionRevealScreen,
+    [GameScreen.ANSWER_REVEAL]: AnswerRevealScreen,
+    [GameScreen.VOTING]: VotingScreen,
+  };
+
+  const CurrentScreenComponent = screenMap[currentGameScreen];
 
   return <CurrentScreenComponent config={config} updateConfig={updateConfig} onNext={nextScreen} />;
 }

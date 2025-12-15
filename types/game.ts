@@ -6,6 +6,7 @@ export enum SetupScreen {
 export enum GameScreen {
   QUESTION_FORM,
   QUESTION_REVEAL,
+  ANSWER_REVEAL,
   VOTING,
 }
 

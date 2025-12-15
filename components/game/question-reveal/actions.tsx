@@ -38,8 +38,8 @@ export default function QuestionRevealAction({
         revealed={cardRevealed}
         setRevealed={setCardRevealed}
       />
-      <div className="flex justify-end">
-        <Button disabled={!nextReady} className="mt-8" onClick={handleNextPlayer}>
+      <div className="mt-8 flex justify-end">
+        <Button disabled={!nextReady} onClick={handleNextPlayer}>
           <ArrowRight />
           continue
         </Button>
