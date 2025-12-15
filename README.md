@@ -3,6 +3,8 @@
 [![CI Pipeline](https://github.com/tranadam/question-impostor/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/tranadam/question-impostor/actions/workflows/ci.yml)
 [![Deploy to VPS](https://github.com/tranadam/question-impostor/actions/workflows/cd.yml/badge.svg?branch=main)](https://github.com/tranadam/question-impostor/actions/workflows/cd.yml)
 
+![Impostor Illustration](/public/landing-illustration.png)
+
 ## About the game
 
 Question impostor game you can play with friends on a single phone.
