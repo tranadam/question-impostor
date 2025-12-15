@@ -43,20 +43,20 @@ export function CategoryInput({
           const newValue = e.target.value;
           if (newValue.endsWith(',')) {
             addItem(newValue.slice(0, -1));
-            setValue('');
+            setCategories(items);
           } else {
             setValue(newValue);
           }
-          setCategories(items);
         }}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
             e.preventDefault();
             addItem(value);
+            setCategories(items);
           } else if (e.key === 'Backspace' && !value) {
             setItems(items.slice(0, -1));
+            setCategories(items);
           }
-          setCategories(items);
         }}
         className="h-7 rounded-none border-0 p-0 shadow-none focus-visible:ring-0"
         type="text"
