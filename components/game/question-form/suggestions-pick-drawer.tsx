@@ -24,7 +24,7 @@ export function SuggestionsPickDrawer({
 }) {
   return (
     <Drawer open={open} onClose={onClose}>
-      <DrawerContent className="overflow-y-scroll">
+      <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>suggested question pairs</DrawerTitle>
           <DrawerDescription>
@@ -51,7 +51,6 @@ export function SuggestionsPickDrawer({
             <>
               <div className="bg-secondary h-20 w-full animate-pulse rounded-md"></div>
               <div className="bg-secondary h-20 w-full animate-pulse rounded-md delay-100"></div>
-              <div className="bg-secondary h-20 w-full animate-pulse rounded-md delay-200"></div>
             </>
           )}
         </div>
