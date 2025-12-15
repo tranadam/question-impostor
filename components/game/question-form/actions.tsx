@@ -46,8 +46,8 @@ export default function QuestionFormActions({
   const [suggestedQuestions, setSuggestedQuestions] = useState<QuestionResponse[]>([]);
   const [suggestionsDrawerOpen, setSuggestionsDrawerOpen] = useState(false);
 
-  const handleNext = () => {
-    const gamePlayersWithoutWhoAsked = getUpdatedGamePlayers(config.players, config.whoAskedIdx);
+  const handleNext = (whoAskedIdx: number = config.whoAskedIdx) => {
+    const gamePlayersWithoutWhoAsked = getUpdatedGamePlayers(config.players, whoAskedIdx);
     const playersWithImpostors = getPlayersWithImpostors(
       gamePlayersWithoutWhoAsked,
       config.impostorCount
@@ -93,13 +93,13 @@ export default function QuestionFormActions({
       impostorQuestion: questions[0].impostorQuestion,
       whoAskedIdx: -1,
     });
-    handleNext();
+    handleNext(-1);
   };
 
   const handleGenerateAiSuggestions = async (categories: string[], context: string) => {
     toast.info('Generating questions with AI...');
     setSuggestionsDrawerOpen(true);
-    const questions = await fetchQuestions(categories, context, 3);
+    const questions = await fetchQuestions(categories, context, 2);
     setSuggestedQuestions(questions);
   };
 
@@ -109,7 +109,7 @@ export default function QuestionFormActions({
         disabled={
           config.mainQuestion === '' || config.impostorQuestion === '' || config.whoAskedIdx === -1
         }
-        onClick={handleNext}
+        onClick={() => handleNext()}
       >
         <Dices />
         let&apos;s play
