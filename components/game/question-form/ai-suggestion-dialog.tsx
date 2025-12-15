@@ -116,6 +116,7 @@ function AiSuggestionsForm({
       <div className="space-y-2">
         <Label htmlFor="categories">categories</Label>
         <CategoryInput
+          categories={categories}
           setCategories={setCategories}
           id="categories"
           placeholder="comma separated categories"

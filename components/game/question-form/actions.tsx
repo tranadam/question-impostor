@@ -97,7 +97,6 @@ export default function QuestionFormActions({
   };
 
   const handleGenerateAiSuggestions = async (categories: string[], context: string) => {
-    toast.info(categories.join(' / ') || 'No categories selected');
     toast.info('Generating questions with AI...');
     setSuggestionsDrawerOpen(true);
     const questions = await fetchQuestions(categories, context, 2);

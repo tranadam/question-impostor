@@ -4,35 +4,36 @@ import { X } from 'lucide-react';
 import React from 'react';
 
 export function CategoryInput({
+  categories,
   setCategories,
   ...props
 }: {
+  categories: string[];
   setCategories: React.Dispatch<React.SetStateAction<string[]>>;
 } & React.InputHTMLAttributes<HTMLInputElement>) {
   const [value, setValue] = React.useState('');
-  const [items, setItems] = React.useState<string[]>([]);
 
   function addItem(v: string) {
     const trimmed = v.trim();
-    if (!trimmed || items.includes(trimmed)) return;
-    setItems([...items, trimmed]);
+    if (!trimmed || categories.includes(trimmed)) return;
+    setCategories([...categories, trimmed]);
     setValue('');
   }
 
   function removeItem(v: string) {
-    setItems(items.filter((i) => i !== v));
+    setCategories(categories.filter((i) => i !== v));
   }
 
   return (
     <div className="focus-within:border-ring focus-within:ring-ring/50 flex flex-wrap gap-2 rounded-md border px-3 py-1 transition-[color,box-shadow] focus-within:ring-[3px]">
-      {items.map((item) => (
+      {categories.map((category) => (
         <Badge
-          key={item}
+          key={category}
           variant="secondary"
           className="cursor-pointer"
-          onClick={() => removeItem(item)}
+          onClick={() => removeItem(category)}
         >
-          {item}
+          {category}
           <X />
         </Badge>
       ))}
@@ -43,7 +44,6 @@ export function CategoryInput({
           const newValue = e.target.value;
           if (newValue.endsWith(',')) {
             addItem(newValue.slice(0, -1));
-            setCategories(items);
           } else {
             setValue(newValue);
           }
@@ -52,10 +52,9 @@ export function CategoryInput({
           if (e.key === 'Enter') {
             e.preventDefault();
             addItem(value);
-            setCategories(items);
+            setCategories(categories);
           } else if (e.key === 'Backspace' && !value) {
-            setItems(items.slice(0, -1));
-            setCategories(items);
+            setCategories(categories.slice(0, -1));
           }
         }}
         className="h-7 rounded-none border-0 p-0 shadow-none focus-visible:ring-0"
