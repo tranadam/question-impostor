@@ -39,13 +39,21 @@ export function CategoryInput({
 
       <Input
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) => {
+          const newValue = e.target.value;
+          if (newValue.endsWith(',')) {
+            addItem(newValue.slice(0, -1));
+            setValue('');
+          } else {
+            setValue(newValue);
+          }
+          setCategories(items);
+        }}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ',') {
+          if (e.key === 'Enter') {
             e.preventDefault();
             addItem(value);
-          }
-          if (e.key === 'Backspace' && !value) {
+          } else if (e.key === 'Backspace' && !value) {
             setItems(items.slice(0, -1));
           }
           setCategories(items);
