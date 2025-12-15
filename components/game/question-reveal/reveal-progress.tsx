@@ -53,7 +53,7 @@ export default function RevealProgress({
           {currentPlayerIdx + 1} / {players.length}
         </TypographySmall>
       </div>
-      <Progress className="mt-2" value={((currentPlayerIdx + 1) / players.length) * 100} />
+      <Progress className="mt-2" value={(currentPlayerIdx / players.length) * 100} />
     </div>
   );
 }
