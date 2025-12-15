@@ -34,7 +34,9 @@ export default function QuestionCard({
           </div>
         </div>
         <div className="bg-card absolute grid h-full w-full rotate-y-180 place-items-center rounded-lg border shadow-sm backface-hidden">
-          <TypographyH4>{question}</TypographyH4>
+          <TypographyH4 className={cn('opacity-0', revealed && 'opacity-100 transition-opacity')}>
+            {question}
+          </TypographyH4>
         </div>
       </div>
     </button>
