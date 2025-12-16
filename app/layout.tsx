@@ -27,6 +27,11 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="manifest" href="/manifest.json" />
+        <script
+          defer
+          data-domain="impostor.adamtran.cz"
+          src="https://plausible.adamtran.cz/js/script.js"
+        ></script>
       </head>
       <body className={poppins.className}>
         <Header />
