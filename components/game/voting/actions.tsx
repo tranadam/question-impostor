@@ -1,51 +1,68 @@
 import { Button } from '@/components/ui/button';
-import NumericInput from '@/components/ui/numeric-input';
 import { TypographySmall } from '@/components/ui/typography';
 import { cn } from '@/lib/utils';
-import { GameConfig, GamePlayer } from '@/types/game';
-import { Eye, Repeat } from 'lucide-react';
+import { GameConfig } from '@/types/game';
+import { Eye, Repeat, X } from 'lucide-react';
 import { useState } from 'react';
-import { toast } from 'sonner';
 
 function PlayersVotingList({
   namesEnabled,
-  players,
-  votes,
-  setVotes,
+  gamePlayers,
+  selectedImpostors,
+  setSelectedImpostors,
+  impostorCount,
   submitted,
-}: {
-  namesEnabled: boolean;
-  players: GamePlayer[];
-  votes: Record<number, number>;
-  setVotes: React.Dispatch<React.SetStateAction<Record<number, number>>>;
+}: Pick<GameConfig, 'gamePlayers' | 'impostorCount' | 'namesEnabled'> & {
+  selectedImpostors: number[];
+  setSelectedImpostors: React.Dispatch<React.SetStateAction<number[]>>;
   submitted: boolean;
 }) {
-  const handleVoteChange = (playerId: number, value: number) => {
-    setVotes((prevVotes) => ({
-      ...prevVotes,
-      [playerId]: Math.max(0, value),
-    }));
+  const togglePlayer = (playerId: number) => {
+    if (selectedImpostors.includes(playerId)) {
+      setSelectedImpostors(selectedImpostors.filter((id) => id !== playerId));
+      return;
+    }
+
+    if (selectedImpostors.length === impostorCount) {
+      setSelectedImpostors([...selectedImpostors.slice(0, selectedImpostors.length - 1), playerId]);
+    } else {
+      setSelectedImpostors([...selectedImpostors, playerId]);
+    }
   };
   return (
     <div className="space-y-2">
-      {players.map((player) => (
-        <div
+      {gamePlayers.map((player) => (
+        <button
           key={player.id}
+          onClick={() => {
+            if (!submitted) togglePlayer(player.id);
+          }}
           className={cn(
-            'flex items-center justify-between gap-2 rounded-lg border px-4 py-2 shadow-sm',
-            submitted && player.isImpostor ? 'bg-primary/20 border-primary/60' : 'bg-card'
+            'bg-card flex w-full cursor-pointer items-center justify-between rounded-lg border px-4 py-3 text-left shadow-sm transition-colors',
+            !submitted &&
+              selectedImpostors.includes(player.id) &&
+              'bg-primary/20 border-primary/60 hover:bg-primary/15',
+            !submitted && !selectedImpostors.includes(player.id) && 'hover:bg-primary/5',
+            submitted &&
+              player.isImpostor &&
+              selectedImpostors.includes(player.id) &&
+              'border-green-600 bg-green-200 text-green-600',
+            submitted &&
+              !player.isImpostor &&
+              selectedImpostors.includes(player.id) &&
+              'border-red-600 bg-red-200 text-red-600',
+            submitted &&
+              player.isImpostor &&
+              !selectedImpostors.includes(player.id) &&
+              'border-red-400 bg-red-200 text-red-600'
           )}
         >
           <TypographySmall>{namesEnabled ? player.name : 'Player ' + player.id}</TypographySmall>
-          <NumericInput
-            size="sm"
-            value={votes[player.id]}
-            onChange={(event) => handleVoteChange(player.id, Number(event.target.value))}
-            onDecrease={() => handleVoteChange(player.id, Math.max(0, votes[player.id] - 1))}
-            onIncrease={() => handleVoteChange(player.id, votes[player.id] + 1)}
-            disabled={submitted}
-          />
-        </div>
+          {submitted && player.isImpostor && <TypographySmall>IMPOSTOR</TypographySmall>}
+          {submitted && !player.isImpostor && selectedImpostors.includes(player.id) && (
+            <X size={16} />
+          )}
+        </button>
       ))}
     </div>
   );
@@ -54,20 +71,14 @@ function PlayersVotingList({
 export default function VotingActions({
   gamePlayers,
   namesEnabled,
+  impostorCount,
   updateConfig,
   onNext,
-}: Pick<GameConfig, 'gamePlayers' | 'namesEnabled'> & {
+}: Pick<GameConfig, 'gamePlayers' | 'impostorCount' | 'namesEnabled'> & {
   updateConfig: (config: Partial<GameConfig>) => void;
   onNext: () => void;
 }) {
-  const initialVotes = gamePlayers.reduce(
-    (acc, player) => {
-      acc[player.id] = 0;
-      return acc;
-    },
-    {} as Record<number, number>
-  );
-  const [votes, setVotes] = useState<Record<number, number>>(initialVotes);
+  const [selectedImpostors, setSelectedImpostors] = useState<number[]>([]);
   const [submitted, setSubmitted] = useState(false);
 
   const handlePlayAgain = () => {
@@ -81,36 +92,16 @@ export default function VotingActions({
 
   const handleVoteSubmit = () => {
     setSubmitted(true);
-    // Count total votes
-    const totalVotes = Object.values(votes).reduce((sum, count) => sum + count, 0);
-    const impostorVotes = Object.entries(votes)
-      .filter(([playerId]) => {
-        const player = gamePlayers.find((p) => p.id === Number(playerId));
-        return player?.isImpostor;
-      })
-      .reduce((sum, [, count]) => sum + count, 0);
-
-    if (impostorVotes > totalVotes / 2) {
-      toast.info(
-        `Crewmates win! ${impostorVotes} out of ${totalVotes} votes were for the impostor.`,
-        { duration: 8000 }
-      );
-      return;
-    } else {
-      toast.info(
-        `Impostor wins! Only ${impostorVotes} out of ${totalVotes} votes were for the impostor.`,
-        { duration: 8000 }
-      );
-    }
   };
 
   return (
     <div>
       <PlayersVotingList
+        selectedImpostors={selectedImpostors}
+        setSelectedImpostors={setSelectedImpostors}
+        impostorCount={impostorCount}
         namesEnabled={namesEnabled}
-        players={gamePlayers}
-        votes={votes}
-        setVotes={setVotes}
+        gamePlayers={gamePlayers}
         submitted={submitted}
       />
       <Button disabled={submitted} onClick={handleVoteSubmit} className="mt-6 w-full">

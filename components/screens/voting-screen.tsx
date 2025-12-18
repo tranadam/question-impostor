@@ -18,6 +18,7 @@ export default function VotingScreen({
         <VotingActions
           namesEnabled={config.namesEnabled}
           gamePlayers={config.gamePlayers}
+          impostorCount={config.impostorCount}
           updateConfig={updateConfig}
           onNext={onNext}
         />
