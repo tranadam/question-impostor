@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { TypographySmall } from '@/components/ui/typography';
+import { TypographyBlockquote, TypographyP, TypographySmall } from '@/components/ui/typography';
 import { cn } from '@/lib/utils';
 import { GameConfig } from '@/types/game';
 import { Eye, Repeat, X } from 'lucide-react';
@@ -10,9 +10,11 @@ function PlayersVotingList({
   gamePlayers,
   selectedImpostors,
   setSelectedImpostors,
+  answers,
+  gameType,
   impostorCount,
   submitted,
-}: Pick<GameConfig, 'gamePlayers' | 'impostorCount' | 'namesEnabled'> & {
+}: Pick<GameConfig, 'gamePlayers' | 'answers' | 'impostorCount' | 'namesEnabled' | 'gameType'> & {
   selectedImpostors: number[];
   setSelectedImpostors: React.Dispatch<React.SetStateAction<number[]>>;
   submitted: boolean;
@@ -31,14 +33,14 @@ function PlayersVotingList({
   };
   return (
     <div className="space-y-2">
-      {gamePlayers.map((player) => (
+      {gamePlayers.map((player, idx) => (
         <button
           key={player.id}
           onClick={() => {
             if (!submitted) togglePlayer(player.id);
           }}
           className={cn(
-            'bg-card flex w-full cursor-pointer items-center justify-between rounded-lg border px-4 py-3 text-left shadow-sm transition-colors',
+            'bg-card flex w-full cursor-pointer flex-col rounded-lg border px-4 py-3 text-left shadow-sm transition-colors',
             !submitted &&
               selectedImpostors.includes(player.id) &&
               'bg-primary/20 border-primary/60 hover:bg-primary/15',
@@ -57,10 +59,15 @@ function PlayersVotingList({
               'border-red-400 bg-red-200 text-red-600'
           )}
         >
-          <TypographySmall>{namesEnabled ? player.name : 'Player ' + player.id}</TypographySmall>
-          {submitted && player.isImpostor && <TypographySmall>IMPOSTOR</TypographySmall>}
-          {submitted && !player.isImpostor && selectedImpostors.includes(player.id) && (
-            <X size={16} />
+          <div className="flex items-center justify-between">
+            <TypographySmall>{namesEnabled ? player.name : 'Player ' + player.id}</TypographySmall>
+            {submitted && player.isImpostor && <TypographySmall>IMPOSTOR</TypographySmall>}
+            {submitted && !player.isImpostor && selectedImpostors.includes(player.id) && (
+              <X size={16} />
+            )}
+          </div>
+          {gameType === 'mobile' && (
+            <TypographyBlockquote className="mt-4">{answers[idx]}</TypographyBlockquote>
           )}
         </button>
       ))}
@@ -71,10 +78,12 @@ function PlayersVotingList({
 export default function VotingActions({
   gamePlayers,
   namesEnabled,
+  gameType,
+  answers,
   impostorCount,
   updateConfig,
   onNext,
-}: Pick<GameConfig, 'gamePlayers' | 'impostorCount' | 'namesEnabled'> & {
+}: Pick<GameConfig, 'answers' | 'gamePlayers' | 'impostorCount' | 'gameType' | 'namesEnabled'> & {
   updateConfig: (config: Partial<GameConfig>) => void;
   onNext: () => void;
 }) {
@@ -83,7 +92,6 @@ export default function VotingActions({
 
   const handlePlayAgain = () => {
     updateConfig({
-      currentPlayerIdx: 0,
       mainQuestion: '',
       impostorQuestion: '',
     });
@@ -97,7 +105,9 @@ export default function VotingActions({
   return (
     <div>
       <PlayersVotingList
+        gameType={gameType}
         selectedImpostors={selectedImpostors}
+        answers={answers}
         setSelectedImpostors={setSelectedImpostors}
         impostorCount={impostorCount}
         namesEnabled={namesEnabled}

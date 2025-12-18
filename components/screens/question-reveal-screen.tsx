@@ -19,6 +19,9 @@ export default function QuestionRevealScreen({
         currentPlayerIdx={config.currentPlayerIdx}
       />
       <QuestionRevealAction
+        answers={config.answers}
+        setAnswers={(ans) => updateConfig({ answers: ans })}
+        gameType={config.gameType}
         gamePlayers={config.gamePlayers}
         impostorQuestion={config.impostorQuestion}
         mainQuestion={config.mainQuestion}

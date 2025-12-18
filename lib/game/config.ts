@@ -25,4 +25,5 @@ export const INITIAL_GAME_CONFIG: GameConfig = {
   mainQuestion: '',
   impostorQuestion: '',
   whoAskedIdx: -1,
+  answers: Array.from({ length: MIN_PLAYERS }, () => ''),
 };

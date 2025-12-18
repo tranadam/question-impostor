@@ -1,5 +1,7 @@
 import QuestionCard from '@/components/game/question-reveal/question-card';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
 import { GameConfig } from '@/types/game';
 import { ArrowRight } from 'lucide-react';
 import { useState } from 'react';
@@ -9,10 +11,17 @@ export default function QuestionRevealAction({
   impostorQuestion,
   gamePlayers,
   currentPlayerIdx,
+  gameType,
   setCurrentPlayerIdx,
+  answers,
+  setAnswers,
   onNext,
-}: Pick<GameConfig, 'mainQuestion' | 'impostorQuestion' | 'gamePlayers' | 'currentPlayerIdx'> & {
+}: Pick<
+  GameConfig,
+  'mainQuestion' | 'answers' | 'gameType' | 'impostorQuestion' | 'gamePlayers' | 'currentPlayerIdx'
+> & {
   setCurrentPlayerIdx: (idx: number) => void;
+  setAnswers: (answers: string[]) => void;
   onNext: () => void;
 }) {
   const [nextReady, setNextReady] = useState(false);
@@ -38,10 +47,26 @@ export default function QuestionRevealAction({
         revealed={cardRevealed}
         setRevealed={setCardRevealed}
       />
-      <div className="mt-8 flex justify-end">
-        <Button disabled={!nextReady} onClick={handleNextPlayer}>
+      <div
+        className={cn('mt-8 flex gap-2', gameType === 'mobile' ? 'justify-between' : 'justify-end')}
+      >
+        {gameType === 'mobile' && (
+          <Input
+            value={answers[currentPlayerIdx]}
+            onChange={(e) => {
+              const newAnswers = [...answers];
+              newAnswers[currentPlayerIdx] = e.target.value;
+              setAnswers(newAnswers);
+            }}
+            placeholder="your answer"
+          />
+        )}
+        <Button
+          disabled={!nextReady || (gameType === 'mobile' && !answers[currentPlayerIdx])}
+          onClick={handleNextPlayer}
+        >
           <ArrowRight />
-          continue
+          {gameType === 'mobile' ? 'submit' : 'continue'}
         </Button>
       </div>
     </section>

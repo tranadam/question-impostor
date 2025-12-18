@@ -36,7 +36,6 @@ export function GameVariantActions({
           description="Players write their answers directly into the phone"
           icon={Phone}
           active={config.gameType === 'mobile'}
-          disabled
         />
       </div>
       <Button onClick={handleChooseMode} disabled={config.gameType === null} className="w-full">

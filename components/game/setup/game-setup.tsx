@@ -58,14 +58,20 @@ export default function GameSetup({
           isImpostor: false,
         })),
       ];
+      const newAnswers = [
+        ...config.answers,
+        ...Array.from({ length: count - config.answers.length }, () => ''),
+      ];
       updateConfig({
         totalPlayers: count,
         players: newPlayers,
+        answers: newAnswers,
       });
     } else {
       updateConfig({
         totalPlayers: count,
         players: config.players.slice(0, count),
+        answers: config.answers.slice(0, count),
       });
     }
   };

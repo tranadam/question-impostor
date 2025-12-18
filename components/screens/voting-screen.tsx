@@ -17,8 +17,10 @@ export default function VotingScreen({
       <div className="mt-8">
         <VotingActions
           namesEnabled={config.namesEnabled}
+          answers={config.answers}
           gamePlayers={config.gamePlayers}
           impostorCount={config.impostorCount}
+          gameType={config.gameType}
           updateConfig={updateConfig}
           onNext={onNext}
         />

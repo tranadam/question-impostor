@@ -30,6 +30,7 @@ export interface GameConfig {
   mainQuestion: string;
   impostorQuestion: string;
   whoAskedIdx: number;
+  answers: string[];
 }
 
 export enum StorageKeys {

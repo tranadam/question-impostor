@@ -52,7 +52,11 @@ export default function QuestionFormActions({
       gamePlayersWithoutWhoAsked,
       config.impostorCount
     );
-    updateConfig({ currentPlayerIdx: 0, gamePlayers: playersWithImpostors });
+    updateConfig({
+      currentPlayerIdx: 0,
+      gamePlayers: playersWithImpostors,
+      answers: config.answers.map(() => ''),
+    });
     onNext();
   };
 
