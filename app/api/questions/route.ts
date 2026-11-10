@@ -79,7 +79,8 @@ No explanations. No extra text.
   `;
 
   const response = await client.responses.create({
-    model: 'gpt-4.1-nano',
+    model: 'gpt-6-luna',
+    reasoning: { effort: 'none' },
     input: prompt,
   });
 
